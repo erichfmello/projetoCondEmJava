@@ -1,0 +1,126 @@
+package View;
+
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import Controler.*;
+
+public class ViewCommonAreas {
+
+	public JFrame frmCommunAreas;
+	private JTextField txtName;
+	
+	// Variaveis
+	private String name;
+	private String cnpj;
+	private String nameOld;
+	
+	// Variaveis do controler
+	ControlerCommunArea controlerCommunArea;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewCommonAreas window = new ViewCommonAreas();
+					window.frmCommunAreas.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewCommonAreas() {
+		initialize();
+	}
+	
+	public ViewCommonAreas(String cnpj) {
+		this.cnpj = cnpj;
+		initialize();
+	}
+	
+	public ViewCommonAreas(String cnpj, String name) {
+		this.cnpj = cnpj;
+		this.name = name;
+		this.nameOld = name;
+		
+		initialize();
+		txtName.setText(name);
+		frmCommunAreas.setTitle(name);
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmCommunAreas = new JFrame();
+		frmCommunAreas.setTitle("Areas comuns");
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension dimension = tk.getScreenSize();
+		int width = dimension.width / 2 - 148;
+		int height = dimension.height / 2 - 74;
+		frmCommunAreas.setBounds(width, height, 296, 148);
+		frmCommunAreas.setResizable(false);
+		frmCommunAreas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCommunAreas.getContentPane().setLayout(null);
+		
+		JLabel lblName = new JLabel("Nome:");
+		lblName.setBounds(10, 11, 46, 14);
+		frmCommunAreas.getContentPane().add(lblName);
+		
+		txtName = new JTextField();
+		txtName.setBounds(66, 11, 200, 20);
+		frmCommunAreas.getContentPane().add(txtName);
+		txtName.setColumns(10);
+		
+		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				name = txtName.getText();
+				
+				boolean controler = false;
+				/*
+				for(int i = 0; i < totalCommunAreas; i++) {
+					if(name == controlerCommunArea.getModelCommunArea()[i].getName()) {
+						controlerCommunArea.updateCommunArea(name, nameOld, cnpj);
+						controlerCommunArea.getModelCommunArea()[i].setName(name);
+						controler = true;
+					}
+				}
+				
+				if(controler == false) {
+					controlerCommunArea = new ControlerCommunArea(name, cnpj);
+					controlerCommunArea.insertCommunArea();										
+				}*/
+				
+				frmCommunAreas.dispose();								
+			}
+		});
+		btnOk.setBounds(177, 42, 89, 25);
+		frmCommunAreas.getContentPane().add(btnOk);
+		
+		JButton btnCancel = new JButton("Cancelar");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmCommunAreas.dispose();
+			}
+		});
+		btnCancel.setBounds(177, 78, 89, 25);
+		frmCommunAreas.getContentPane().add(btnCancel);
+	}
+}

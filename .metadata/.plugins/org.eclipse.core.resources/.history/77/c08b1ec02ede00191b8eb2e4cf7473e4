@@ -1,0 +1,100 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
+import javax.swing.JLabel;
+import javax.swing.JTextPane;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import Controler.*;
+
+public class ViewRentalModel {
+
+	public JFrame frmRentalModel;
+	private JTextField textField;
+	
+	// Variáveis comuns
+	private String cnpj;
+	
+	// Variaveis do controler
+	ControlerRentalModel controlerRentalModel;
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewRentalModel window = new ViewRentalModel();
+					window.frmRentalModel.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewRentalModel() {
+		initialize();
+	}
+	
+	public ViewRentalModel(String cpnj) {
+		this.cnpj = cnpj;
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmRentalModel = new JFrame();
+		frmRentalModel.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\aluguelr2.png"));
+		frmRentalModel.setTitle("Modelo de aluguel");
+		frmRentalModel.setBounds(100, 100, 440, 300);
+		frmRentalModel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmRentalModel.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Descri\u00E7\u00E3o do modelo de aluguel:");
+		lblNewLabel.setBounds(10, 11, 243, 14);
+		frmRentalModel.getContentPane().add(lblNewLabel);
+		
+		JTextPane txtDescription = new JTextPane();
+		txtDescription.setBounds(10, 36, 400, 150);
+		frmRentalModel.getContentPane().add(txtDescription);
+		
+		JLabel lblValor = new JLabel("Valor:");
+		lblValor.setBounds(10, 197, 50, 14);
+		frmRentalModel.getContentPane().add(lblValor);
+		
+		textField = new JTextField();
+		textField.setBounds(65, 194, 86, 20);
+		frmRentalModel.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnOk.setBounds(321, 193, 89, 23);
+		frmRentalModel.getContentPane().add(btnOk);
+		
+		JButton btnCancel = new JButton("Cancelar");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmRentalModel.dispose();
+			}
+		});
+		btnCancel.setBounds(321, 227, 89, 23);
+		frmRentalModel.getContentPane().add(btnCancel);
+	}
+}

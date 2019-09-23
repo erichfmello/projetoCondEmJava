@@ -1,0 +1,46 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
+
+public class ViewRentalModel {
+
+	private JFrame frmRentalModel;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewRentalModel window = new ViewRentalModel();
+					window.frmRentalModel.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewRentalModel() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmRentalModel = new JFrame();
+		frmRentalModel.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\aluguelr2.png"));
+		frmRentalModel.setTitle("Modelo de aluguel");
+		frmRentalModel.setBounds(100, 100, 450, 300);
+		frmRentalModel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+}

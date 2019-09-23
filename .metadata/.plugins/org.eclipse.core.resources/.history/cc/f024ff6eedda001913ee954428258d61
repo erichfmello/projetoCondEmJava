@@ -1,0 +1,115 @@
+package Controler;
+
+import java.sql.*;
+
+import Model.ModelAppartamentThisFloor;
+
+public class ControlerAppartment {
+	private int appartment;
+	private int floor;
+	private int finalNumber;
+	private String block;
+	
+	private int totalAppartmentThisFloor;
+	
+	// Variaveis de geração dos model
+	public ModelAppartamentThisFloor[] modelAppartamentThisFloors;
+	
+	// Variaveis de conexao
+	Connection conn;
+	Statement comandoSql;
+	ResultSet rs;
+	
+	public ControlerAppartment() {
+	}
+		
+	public ControlerAppartment(int appartment, int floor, int finalNumber, String block) {
+		this.appartment = appartment;
+		this.floor = floor;
+		this.finalNumber = finalNumber;
+		this.block = block;
+	}
+
+	public Connection connectingAppartment() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			System.out.println("Drive localizado");
+			
+			String bdUrl = "jdbc:mysql://localhost:3306/virtualdoorman";
+			String bdUser = "root";
+			String bdPassword = "Pantru123";
+			
+			conn = DriverManager.getConnection(bdUrl, bdUser, bdPassword);
+			System.out.println("Conectado: " + conn);
+			
+			return conn;
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("Drive não localizado: " + e);
+			return null;
+		} catch (SQLException e) {
+			System.out.println("Erro na conexao: " + e);
+			return null;
+		}
+	}
+	
+	public void closeConectionApartment(Connection conn) {
+		try {
+			conn.close();
+			System.out.println("Conexão fechada: " + conn);
+			
+		} catch(SQLException e) {
+			System.out.println("Erro para fechar a conexão: " + e);
+
+		}
+	}
+	
+	public void insertAppartment(String cnpj) {
+		try {
+			connectingAppartment();
+			
+			conn = connectingAppartment();
+			comandoSql = conn.createStatement();
+			comandoSql.executeUpdate("insert into apartamentos values(" + appartment + ", " + floor + ", " + finalNumber + ", " + block + ", " + cnpj + ")");
+			System.out.println("Dados inseridos com sucesso: " + conn);
+			
+			closeConectionApartment(conn);
+			
+		} catch(SQLException e) {
+			System.out.println("Erro na inserção: " + e);
+		}
+	}
+	
+	public void selectAppartment(int floor) {
+		int i = 0;
+		try {
+			connectingAppartment();
+			
+			conn = connectingAppartment();
+			comandoSql = conn.createStatement();
+			rs = comandoSql.executeQuery("select count(*) from apartamentos where cnpj = '20' and apartamento between " + (floor+1)*10 + " and " + (floor+2)*10);
+			
+			if(rs.next()) {
+				totalAppartmentThisFloor = rs.getInt("count(*)");
+				System.out.println(totalAppartmentThisFloor);
+			}
+			
+			modelAppartamentThisFloors = new ModelAppartamentThisFloor[totalAppartmentThisFloor];
+			rs = comandoSql.executeQuery("select * from apartamentos where cnpj = '" + 20 + "' and apartamento between " + ((floor+1)*10) + " and " + ((floor-1)*10));
+			
+			while(rs.next()) {
+				modelAppartamentThisFloors[i] = new ModelAppartamentThisFloor(rs.getInt("apartamento"), rs.getInt("andar"), rs.getInt("final"), rs.getString("bloco"), rs.getString("cnpj"));
+				System.out.println(modelAppartamentThisFloors[i].getAppartment());
+				i++;
+			}
+			System.out.println("Select executado com sucesso: " + conn);
+			
+			closeConectionApartment(conn);
+			
+			
+		} catch (SQLException e) {
+			System.out.println("Erro do select: " + e);
+		}
+		
+	}
+}

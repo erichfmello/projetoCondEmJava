@@ -1,0 +1,122 @@
+package View;
+
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import Controler.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class ViewAllCommunAreas {
+
+	public JFrame frmAllAreas;
+	private JList listAllAreas;
+	
+	// Variaveis comuns
+	String cnpj;
+	
+	// Variaveis do controler
+	ControlerCommunArea controlerCommunArea = new ControlerCommunArea();
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewAllCommunAreas window = new ViewAllCommunAreas();
+					window.frmAllAreas.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewAllCommunAreas() {
+		initialize();
+	}
+	
+	public ViewAllCommunAreas(String cnpj) {
+		initialize();
+		this.cnpj = cnpj;
+	}
+
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmAllAreas = new JFrame();
+		frmAllAreas.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+				JOptionPane.showMessageDialog(null, cnpj);
+				controlerCommunArea.selectCommunArea(cnpj);
+				
+				DefaultListModel defaultListModelAllAreas = new DefaultListModel();
+				for(int i = 0; i < controlerCommunArea.getTotalAreas(); i++) {
+					defaultListModelAllAreas.add(i, controlerCommunArea.getModelCommunArea()[i].getName());
+				}
+				listAllAreas.setModel(defaultListModelAllAreas);
+			}
+		});
+		frmAllAreas.setTitle("Totas as Areas");
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension dimension = tk.getScreenSize();
+		int width = dimension.width/2 - 205;
+		int height = dimension.height/2 - 71;
+		frmAllAreas.setBounds(width, height, 410, 142);
+		frmAllAreas.setResizable(false);
+		frmAllAreas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAllAreas.getContentPane().setLayout(null);
+		
+		JScrollPane scrollPaneAllAreas = new JScrollPane();
+		scrollPaneAllAreas.setBounds(10, 11, 171, 80);
+		frmAllAreas.getContentPane().add(scrollPaneAllAreas);
+		
+		listAllAreas = new JList();
+		scrollPaneAllAreas.setViewportView(listAllAreas);
+		
+		JButton btnNewButton = new JButton("Ok");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmAllAreas.dispose();
+			}
+		});
+		btnNewButton.setBounds(191, 9, 89, 25);
+		frmAllAreas.getContentPane().add(btnNewButton);
+		
+		JButton btnApagar = new JButton("Apagar");
+		btnApagar.setBounds(191, 43, 89, 25);
+		frmAllAreas.getContentPane().add(btnApagar);
+		
+		JButton btnNovo = new JButton("Novo");
+		btnNovo.setBounds(290, 8, 89, 25);
+		frmAllAreas.getContentPane().add(btnNovo);
+		
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.setBounds(290, 44, 89, 25);
+		frmAllAreas.getContentPane().add(btnEditar);
+	}
+}
