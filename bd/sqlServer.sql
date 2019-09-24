@@ -68,7 +68,7 @@ create table ModeloAluguel (
     cnpj varchar(20),
     descricao varchar(50) not null,
     preco float not null,
-    primary key(cnpj),
+    primary key(cnpj, descricao),
     constraint fk_ModeloAluguel_cnpj foreign key(cnpj) references condominio(cnpj)
 );
 

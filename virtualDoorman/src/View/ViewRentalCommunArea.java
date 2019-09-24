@@ -15,13 +15,21 @@ import Controler.ControlerRentalModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ViewRentalCommunArea {
 
 	public JFrame frmRentalCommunAreas;
+	private JList listRentalModel;
+	int totalRentalModel = 0;
+	private String[] description;
+	private double[] price;
 	
 	// Variaveis comuns
 	private String cnpj;
@@ -66,30 +74,37 @@ public class ViewRentalCommunArea {
 	 */
 	private void initialize() {
 		frmRentalCommunAreas = new JFrame();
+		frmRentalCommunAreas.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+				seedListRentalModel();
+				
+			}
+		});
 		frmRentalCommunAreas.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\aluguelr2.png"));
 		frmRentalCommunAreas.setTitle("Aluguel de areas");
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension dimension = tk.getScreenSize();
 		int width = dimension.width/2 - 139;
 		int height = dimension.height/2 - 150;
-		frmRentalCommunAreas.setBounds(width, height, 278, 300);
+		frmRentalCommunAreas.setBounds(width, height, 446, 378);
 		frmRentalCommunAreas.setResizable(false);
 		frmRentalCommunAreas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmRentalCommunAreas.getContentPane().setLayout(null);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 138, 239);
-		frmRentalCommunAreas.getContentPane().add(scrollPane);
+		JScrollPane scrollPaneRental = new JScrollPane();
+		scrollPaneRental.setBounds(10, 11, 300, 158);
+		frmRentalCommunAreas.getContentPane().add(scrollPaneRental);
 		
-		JList list = new JList();
-		scrollPane.setViewportView(list);
+		JList listRental = new JList();
+		scrollPaneRental.setViewportView(listRental);
 		
 		JButton btnNew = new JButton("Novo");
-		btnNew.setBounds(158, 9, 90, 25);
+		btnNew.setBounds(336, 11, 90, 25);
 		frmRentalCommunAreas.getContentPane().add(btnNew);
 		
 		JButton btnApagar = new JButton("Apagar");
-		btnApagar.setBounds(158, 45, 90, 25);
+		btnApagar.setBounds(336, 47, 90, 25);
 		frmRentalCommunAreas.getContentPane().add(btnApagar);
 		
 		JButton btnOk = new JButton("Ok");
@@ -99,28 +114,68 @@ public class ViewRentalCommunArea {
 				frmRentalCommunAreas.dispose();
 			}
 		});
-		btnOk.setBounds(158, 81, 90, 25);
+		btnOk.setBounds(336, 83, 90, 25);
 		frmRentalCommunAreas.getContentPane().add(btnOk);
 		
 		JButton btnModeloDeAlugual = new JButton("Modelo");
 		btnModeloDeAlugual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean verification = false;
-				verification = controRentalModel.selectRentalModel(cnpj);
-				
-				if(verification == true) {
-					viewRenalModel = new ViewRentalModel(cnpj, controRentalModel.getModelRentalModel().getDescription(), controRentalModel.getModelRentalModel().getPrice());
-					viewRenalModel.frmRentalModel.setVisible(true);
-					
-				} else {
+				if(listRentalModel.isSelectionEmpty()) {
 					viewRenalModel = new ViewRentalModel(cnpj);
-					viewRenalModel.frmRentalModel.setVisible(true);										
-					
+					viewRenalModel.frmRentalModel.setVisible(true);					
+				} else {
+					int selectionRentalModel = listRentalModel.getSelectedIndex();
+					viewRenalModel = new ViewRentalModel(cnpj, description[selectionRentalModel], price[selectionRentalModel]);
+					viewRenalModel.frmRentalModel.setVisible(true);
 				}
 				
 			}
 		});
-		btnModeloDeAlugual.setBounds(158, 225, 90, 25);
+		btnModeloDeAlugual.setBounds(336, 182, 90, 25);
 		frmRentalCommunAreas.getContentPane().add(btnModeloDeAlugual);
+		
+		JScrollPane scrollPaneRentalModel = new JScrollPane();
+		scrollPaneRentalModel.setBounds(10, 180, 300, 158);
+		frmRentalCommunAreas.getContentPane().add(scrollPaneRentalModel);
+		
+		listRentalModel = new JList();
+		scrollPaneRentalModel.setViewportView(listRentalModel);
+		
+		JButton btnDeleteModel = new JButton("Apagar");
+		btnDeleteModel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int selectDelete = listRentalModel.getSelectedIndex();
+				
+				String descriptionDelete = controRentalModel.getModelRentalModel()[selectDelete].getDescription();
+				double priceDelete = controRentalModel.getModelRentalModel()[selectDelete].getPrice();
+				
+				controRentalModel = new ControlerRentalModel(cnpj, descriptionDelete, priceDelete);
+				controRentalModel.deleteSelectModel();
+				
+				seedListRentalModel();
+				
+			}
+		});
+		btnDeleteModel.setBounds(336, 216, 90, 25);
+		frmRentalCommunAreas.getContentPane().add(btnDeleteModel);
+	}
+	
+	// Modularização
+	private void seedListRentalModel() {
+		controRentalModel.selectAllRentalModel(cnpj);
+		
+		totalRentalModel = controRentalModel.getTotalRentalModel();
+		
+		description = new String[totalRentalModel];
+		price = new double[totalRentalModel];
+		
+		DefaultListModel defaultListModelAllRentalModel = new DefaultListModel();
+		for(int i = 0; i < totalRentalModel; i++) {
+			description[i] = controRentalModel.getModelRentalModel()[i].getDescription();
+			price[i] = controRentalModel.getModelRentalModel()[i].getPrice();
+			
+			defaultListModelAllRentalModel.add(i, description[i] + " - Valor: R$" + price[i]);
+		}
+		listRentalModel.setModel(defaultListModelAllRentalModel);
 	}
 }
