@@ -12,6 +12,7 @@ public class ControlerAppartment extends ControlerConection {
 	private String cnpj;
 	
 	private int totalAppartmentThisFloor;
+	private int totalAppartaments;
 	
 	// Variaveis de geração dos model
 	public ModelAppartamentThisFloor[] modelAppartamentThisFloors;
@@ -75,6 +76,14 @@ public class ControlerAppartment extends ControlerConection {
 
 	public void setTotalAppartmentThisFloor(int totalAppartmentThisFloor) {
 		this.totalAppartmentThisFloor = totalAppartmentThisFloor;
+	}
+
+	public int getTotalAppartaments() {
+		return totalAppartaments;
+	}
+
+	public void setTotalAppartaments(int totalAppartaments) {
+		this.totalAppartaments = totalAppartaments;
 	}
 
 	public ModelAppartamentThisFloor[] getModelAppartamentThisFloors() {
@@ -162,6 +171,43 @@ public class ControlerAppartment extends ControlerConection {
 			
 		} catch (SQLException e) {
 			System.out.println("Select error: " + e);
+		}
+	}
+	
+	public void selectAllAppartaments(String cnpj) {
+		int i = 0;
+		
+		try {
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select count(*) from apartamentos where cnpj = '" + cnpj + "'");
+			
+			if(rs.next()) {
+				totalAppartaments = rs.getInt("count(*)");
+			}
+			
+			modelAppartamentThisFloors = new ModelAppartamentThisFloor[totalAppartaments];
+			
+			rs = comandSql.executeQuery("select * from apartamentos where cnpj = '" + cnpj + "'");
+			
+			while(rs.next()) {
+				appartment = rs.getInt("apartamento");
+				floor = rs.getInt("andar");
+				finalNumber = rs.getInt("final");
+				block = rs.getString("bloco");
+				cnpj = rs.getString("cnpj");
+				
+				modelAppartamentThisFloors[i] = new ModelAppartamentThisFloor(appartment, floor, finalNumber, block, cnpj);
+				i++;
+			}
+			
+			closeConection(conn);
+			
+		} catch (SQLException e) {
+			System.out.println("Erro no select: " + e);
+			
 		}
 	}
 }

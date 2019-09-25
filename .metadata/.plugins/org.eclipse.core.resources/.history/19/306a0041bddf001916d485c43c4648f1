@@ -1,0 +1,46 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
+
+public class ViewAddGuest {
+
+	private JFrame frmAddGuest;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewAddGuest window = new ViewAddGuest();
+					window.frmAddGuest.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewAddGuest() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmAddGuest = new JFrame();
+		frmAddGuest.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\aluguelr2.png"));
+		frmAddGuest.setTitle("Adicionar convidado");
+		frmAddGuest.setBounds(100, 100, 450, 300);
+		frmAddGuest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+}

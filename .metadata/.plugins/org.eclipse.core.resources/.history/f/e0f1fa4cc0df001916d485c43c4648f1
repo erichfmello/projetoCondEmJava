@@ -1,0 +1,39 @@
+package Controler;
+
+import java.sql.*;
+import Model.*;
+
+public class ControlerAllGuest extends ControlerConection {
+	private String documentGuest;
+    private String name;
+    
+    // Contrutores
+    public ControlerAllGuest() {
+	}
+
+	public ControlerAllGuest(String documentGuest, String name) {
+		super();
+		this.documentGuest = documentGuest;
+		this.name = name;
+	}
+
+	// getter and setter
+	public String getDocumentGuest() {
+		return documentGuest;
+	}
+
+	public void setDocumentGuest(String documentGuest) {
+		this.documentGuest = documentGuest;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
+	
+}

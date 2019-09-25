@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<commands>
+	<addCategory
+		id="JCalendar_1569420909338"
+		name="JCalendar"
+		description="Container with import elements from C:\Erich\Faculdade\ProjetoCondominio\extraComponents\jcalendar-1.4.jar"
+		visible="true"
+		open="true"/>
+	<addComponent
+		id="com.toedter.calendar.JDayChooser_1569420909338"
+		name="JDayChooser"
+		description="Custom component: com.toedter.calendar.JDayChooser"
+		visible="true"
+		class="com.toedter.calendar.JDayChooser"
+		category="JCalendar_1569420909338"/>
+	<addComponent
+		id="com.toedter.calendar.JMonthChooser_1569420909338"
+		name="JMonthChooser"
+		description="Custom component: com.toedter.calendar.JMonthChooser"
+		visible="true"
+		class="com.toedter.calendar.JMonthChooser"
+		category="JCalendar_1569420909338"/>
+	<addComponent
+		id="com.toedter.components.JLocaleChooser_1569420909338"
+		name="JLocaleChooser"
+		description="Custom component: com.toedter.components.JLocaleChooser"
+		visible="true"
+		class="com.toedter.components.JLocaleChooser"
+		category="JCalendar_1569420909338"/>
+	<addComponent
+		id="com.toedter.calendar.JCalendar_1569420909338"
+		name="JCalendar"
+		description="Custom component: com.toedter.calendar.JCalendar"
+		visible="true"
+		class="com.toedter.calendar.JCalendar"
+		category="JCalendar_1569420909338"/>
+	<addComponent
+		id="com.toedter.calendar.JDateChooser_1569420909338"
+		name="JDateChooser"
+		description="Custom component: com.toedter.calendar.JDateChooser"
+		visible="true"
+		class="com.toedter.calendar.JDateChooser"
+		category="JCalendar_1569420909338"/>
+	<addComponent
+		id="com.toedter.components.JSpinField_1569420909338"
+		name="JSpinField"
+		description="Custom component: com.toedter.components.JSpinField"
+		visible="true"
+		class="com.toedter.components.JSpinField"
+		category="JCalendar_1569420909338"/>
+	<addComponent
+		id="com.toedter.calendar.JYearChooser_1569420909338"
+		name="JYearChooser"
+		description="Custom component: com.toedter.calendar.JYearChooser"
+		visible="true"
+		class="com.toedter.calendar.JYearChooser"
+		category="JCalendar_1569420909338"/>
+</commands>

@@ -80,3 +80,23 @@ create table Alugado (
     constraint fk_Alugado_cpf foreign key(cpf) references pessoas (cpf),
     constraint fk_Alugado_cnpj foreign key(cnpj) references condominio (cnpj)
 );
+
+create table alugadoConvidado (
+    dataAluguel date,
+    documentoConvidado varchar(20),
+    primary key(dataAluguel, documentoConvidado)
+);
+
+create table convidado (
+    documentoConvidado varchar(20),
+    nome varchar(50) not null,
+    primary key(documentoConvidado)
+);
+
+create table alugadoConvidado (
+    dataAluguel date,
+    documentoConvidado varchar(20),
+    primary key(dataAluguel, documentoConvidado),
+    constraint fk_alugadoConvidado_dataAluguel foreign key(dataAluguel) references alugado(dataAluguel),
+    constraint fk_alugadoConvidado_documentoConvidado foreign key(documentoConvidado) references convidado(documentoConvidado)
+);

@@ -36,6 +36,7 @@ public class ViewRentalCommunArea {
 	
 	// Variaveis de View
 	ViewRentalModel viewRenalModel;
+	ViewRentalCommunAreasDetails viewRentalCommunAreasDetails;
 	
 	// Variaveis do controler
 	ControlerRentalModel controRentalModel = new ControlerRentalModel();
@@ -100,6 +101,12 @@ public class ViewRentalCommunArea {
 		scrollPaneRental.setViewportView(listRental);
 		
 		JButton btnNew = new JButton("Novo");
+		btnNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				viewRentalCommunAreasDetails = new ViewRentalCommunAreasDetails(cnpj);
+				viewRentalCommunAreasDetails.frmRentalCommunAreasDetails.setVisible(true);
+			}
+		});
 		btnNew.setBounds(336, 11, 90, 25);
 		frmRentalCommunAreas.getContentPane().add(btnNew);
 		
