@@ -4,16 +4,11 @@ import java.sql.*;
 
 import Model.ModelResidentialData;
 
-public class ControlerResidentialData {
+public class ControlerResidentialData extends ControlerConection {
 	private String name, address, cep, neighborhood, uf, cnpj;
 	private int number, appartmentLastFloor, floor, appartmentPerFloor, Block;
 
 	private ModelResidentialData residentialData;
-	
-	// Variaveis da coneção
-	Connection conn;
-	Statement comandsSql;
-	ResultSet rs;
 	
 	public ControlerResidentialData() {
 		residentialData = new ModelResidentialData();
@@ -43,56 +38,22 @@ public class ControlerResidentialData {
 	public void setResidentialData(ModelResidentialData residentialData) {
 		this.residentialData = residentialData;
 	}
-
-	// Comandos do SQL
-	public Connection conectingResidentialData() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Drive localizado");
-			
-			String bdUrl = "jdbc:mysql://localhost:3306/virtualdoorman";
-			String bdUser = "root";
-			String bdPassword = "Pantru123";
-			
-			conn = DriverManager.getConnection(bdUrl, bdUser, bdPassword);
-			System.out.println("Conexão realizada com sucesso: " + conn);
-			
-			return conn;
-			
-		} catch (ClassNotFoundException e) {
-			System.out.println("Drive JDBC não localizado: " + e);
-			return null;
-			
-		} catch (SQLException e) {
-			System.out.println("Problemas na conexão: " + e);
-			return null;
-		}
-	}
-	
-	public void closeResidentialData(Connection conn) {
-		try {
-			conn.close();
-			System.out.println("Conexão fechada: " + conn);
-			
-		} catch (SQLException e) {
-			System.out.println("Erro para fechar a conexão: " + e);
-		}
-	}
 	
 	public void insertResidentialData() {
 		try {			
-			conectingResidentialData();
-			conn = conectingResidentialData();
-			comandsSql = conn.createStatement();
+			conecting();
 			
-			comandsSql.executeUpdate("insert into condominio values (" + cnpj + ", '" + name + "', " + appartmentLastFloor + ", " + floor
+			conn = conecting();
+			comandSql = conn.createStatement();
+			
+			comandSql.executeUpdate("insert into condominio values (" + cnpj + ", '" + name + "', " + appartmentLastFloor + ", " + floor
 					+ ", " + appartmentPerFloor + ", " + Block + ");");
 
-			comandsSql.executeUpdate("insert into condominioendereco(endereco, cep, bairro, uf, numero, cnpj) values('" + address + "', '" + cep
+			comandSql.executeUpdate("insert into condominioendereco(endereco, cep, bairro, uf, numero, cnpj) values('" + address + "', '" + cep
 					+ "', '" + neighborhood + "', '" + uf + "', '" + String.valueOf(number) + "', '" + cnpj + "')");
 			
 			System.out.println("Dados inseridos");
-			closeResidentialData(conn);
+			closeConection(conn);
 			
 		} catch (SQLException e) {
 			System.out.print("Erro no insert: " + e);
@@ -102,10 +63,11 @@ public class ControlerResidentialData {
 	
 	public void selectResidentialData() {
 		try {
-			conectingResidentialData();
-			conn = conectingResidentialData();
-			comandsSql = conn.createStatement();
-			rs = comandsSql.executeQuery("select * from condominioendereco ce inner join condominio c on ce.cnpj = c.cnpj where c.cnpj = " + 20);
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select * from condominioendereco ce inner join condominio c on ce.cnpj = c.cnpj where c.cnpj = " + 20);
 			
 			while(rs.next()) {
 				this.name = rs.getString("c.nome");
@@ -125,7 +87,7 @@ public class ControlerResidentialData {
 						floor, appartmentPerFloor, Block);
 			}
 			
-			closeResidentialData(conn);
+			closeConection(conn);
 			
 		} catch (SQLException e) {
 			System.out.println("Erro de seleção: " + e);

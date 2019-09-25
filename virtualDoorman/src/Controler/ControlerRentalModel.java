@@ -1,12 +1,9 @@
 package Controler;
 
 import java.sql.*;
-
-import javax.swing.JOptionPane;
-
 import Model.*;
 
-public class ControlerRentalModel {
+public class ControlerRentalModel extends ControlerConection {
 	// Variaveis comuns
 	private String cnpj;
 	private String description;
@@ -15,11 +12,6 @@ public class ControlerRentalModel {
 	
 	// Variaveis do model
 	ModelRentalModel[] modelRentalModel;
-	
-	// Variaveis de conexao
-	Connection conn;
-	Statement comandSql;
-	ResultSet rs;
 	
 	// Construtores
 	public ControlerRentalModel(){
@@ -71,50 +63,13 @@ public class ControlerRentalModel {
 	public void setModelRentalModel(ModelRentalModel[] modelRentalModel) {
 		this.modelRentalModel = modelRentalModel;
 	}
-
-	// Conexao
-	private Connection conectRentalModel() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Drive localizado");
-			
-			String bdUrl = "jdbc:mysql://localhost:3306/virtualdoorman";
-			String bdUser = "root";
-			String bdPassword = "Pantru123";
-			
-			conn = DriverManager.getConnection(bdUrl, bdUser, bdPassword);
-			System.out.println("Conectado: " + conn);
-			
-			return conn;
-			
-		} catch (ClassNotFoundException e) {
-			System.out.println("Classe não localizada");
-			return null;
-			
-		} catch (SQLException e) {
-			System.out.println("Problema na conexão: " + e);
-			return null;
-			
-		}
-	}
-	
-	private void closeConectionRentalModel(Connection conn) {
-		try {
-			conn.close();
-			System.out.println("Conexao fechada: " + conn);
-			
-		} catch (SQLException e) {
-			System.out.println("Erro para fechar conexao: " + e);
-			
-		}
-	}
 	
 	// Selects
 	public boolean selectRentalModel(String description) {		
 		try {
-			conectRentalModel();
+			conecting();
 			
-			conn = conectRentalModel();
+			conn = conecting();
 			comandSql = conn.createStatement();			
 			rs = comandSql.executeQuery("select * from ModeloAluguel where descricao = '" + description + "'");
 			
@@ -123,12 +78,12 @@ public class ControlerRentalModel {
 				this.description = rs.getString("descricao");
 				this.price = rs.getDouble("preco");
 				
-				closeConectionRentalModel(conn);
+				closeConection(conn);
 				
 				return true;
 				
 			} else {
-				closeConectionRentalModel(conn);
+				closeConection(conn);
 				return false;
 				
 			}
@@ -144,9 +99,9 @@ public class ControlerRentalModel {
 		int i = 0;
 		
 		try {
-			conectRentalModel();
+			conecting();
 			
-			conn = conectRentalModel();
+			conn = conecting();
 			comandSql = conn.createStatement();			
 			rs = comandSql.executeQuery("select count(*) from ModeloAluguel where cnpj = '" + cnpj + "'");
 			if(rs.next()) {
@@ -164,7 +119,7 @@ public class ControlerRentalModel {
 				i++;
 			}
 			
-			closeConectionRentalModel(conn);
+			closeConection(conn);
 			
 		} catch (SQLException e) {
 			System.out.println("Erro no select: " + e);
@@ -175,13 +130,13 @@ public class ControlerRentalModel {
 	// Inserts
 	public void insertRentalModel() {
 		try {
-			conectRentalModel();
+			conecting();
 			
-			conn = conectRentalModel();
+			conn = conecting();
 			comandSql = conn.createStatement();
 			comandSql.executeUpdate("insert into ModeloAluguel values('" + cnpj + "', '" + description + "', " + price + ")");
 			
-			closeConectionRentalModel(conn);
+			closeConection(conn);
 			
 		} catch (SQLException e) {
 			System.out.println("Erro no insert: " + e);
@@ -191,15 +146,15 @@ public class ControlerRentalModel {
 	// Updates
 	public void updateRentalModel(String descriptionOld) {
 		try {
-			conectRentalModel();
+			conecting();
 			
-			conn = conectRentalModel();
+			conn = conecting();
 			comandSql = conn.createStatement();
 			
 			comandSql.executeUpdate("update ModeloAluguel set descricao = '" + description + "', preco = " + price + " where cnpj = '" + cnpj + "' and descricao = '" + descriptionOld + "'");
 			
 			
-			closeConectionRentalModel(conn);
+			closeConection(conn);
 			
 		} catch (SQLException e) {
 			System.out.println("Erro no update: " + e);
@@ -209,14 +164,14 @@ public class ControlerRentalModel {
 	// Deletes
 	public void deleteSelectModel() {
 		try {
-			conectRentalModel();
+			conecting();
 			
-			conn = conectRentalModel();
+			conn = conecting();
 			comandSql = conn.createStatement();
 			
 			comandSql.executeUpdate("delete from ModeloAluguel where cnpj = '" + cnpj + "' and descricao = '" + description + "'");
 			
-			closeConectionRentalModel(conn);
+			closeConection(conn);
 			
 		} catch (SQLException e) {
 			System.out.println("Erro no delete: " + e);

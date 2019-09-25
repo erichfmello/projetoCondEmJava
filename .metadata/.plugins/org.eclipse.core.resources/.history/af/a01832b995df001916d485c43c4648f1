@@ -1,0 +1,12 @@
+package Controler;
+
+import java.sql.*;
+
+public class ControlerConection {
+	private Connection conn;
+	private Statement comandSql;
+	private ResultSet rs;
+	
+	public 
+
+}

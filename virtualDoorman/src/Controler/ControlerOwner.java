@@ -3,7 +3,7 @@ package Controler;
 import java.sql.*;
 import Model.*;
 
-public class ControlerOwner {
+public class ControlerOwner extends ControlerConection {
 	private String cpf;
 	private String name;
 	private String rg;
@@ -15,11 +15,6 @@ public class ControlerOwner {
 	public int[] appartents;
 	
 	private ModelOwner[] modelOwners;
-	
-	// Variaveis de conexao
-	Connection conn;
-	Statement comandoSql;
-	ResultSet rs;
 	
 	// Construtores
 	public ControlerOwner() {
@@ -116,55 +111,17 @@ public class ControlerOwner {
 		this.modelOwners = modelOwners;
 	}
 	
-	
-
-	public Connection conectingOwner() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Drive localizado");
-			
-			String bdUrl = "jdbc:mysql://localhost:3306/virtualdoorman";
-			String bdUser = "root";
-			String bdPassword = "Pantru123";
-			
-			conn = DriverManager.getConnection(bdUrl, bdUser, bdPassword);
-			System.out.println("Conectado: " + conn);
-			
-			return conn;
-			
-		} catch (ClassNotFoundException e) {
-			System.out.println("Drive não localizado: " + e);
-			return null;
-			
-		} catch (SQLException e) {
-			System.out.println("Problema na conexão: " + e);
-			return null;
-		}
-	}
-	
-	public void closeConectionOwner(Connection conn) {
-		try {
-			conn.close();
-			System.out.println("Conexao fechada: " + conn);
-
-		} catch(SQLException e) {
-			System.out.println("Erro para fechar conexao: " + e);
-			
-		}
-		
-	}
-	
 	// Inserts
 	public void insertOwner() {
 		try {
-			conectingOwner();
+			conecting();
 			
-			conn = conectingOwner();
-			comandoSql = conn.createStatement();
-			comandoSql.executeUpdate("insert into pessoas values('" + cpf + "', '" + name + "', '" + rg + "', '" + ddd + "', '" + phone + "', '" + email + "')");
+			conn = conecting();
+			comandSql = conn.createStatement();
+			comandSql.executeUpdate("insert into pessoas values('" + cpf + "', '" + name + "', '" + rg + "', '" + ddd + "', '" + phone + "', '" + email + "')");
 			System.out.println("Dados inseridos com sucesso: " + conn);
 			
-			closeConectionOwner(conn);
+			closeConection(conn);
 
 		} catch (SQLException e) {
 			System.out.println("Erro de inserction: " + e);
@@ -176,18 +133,18 @@ public class ControlerOwner {
 		
 		int i = 0;
 		try {
-			conectingOwner();
+			conecting();
 			
-			conn = conectingOwner();
-			comandoSql = conn.createStatement();
-			rs = comandoSql.executeQuery("select count(*) from pessoas;");
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select count(*) from pessoas;");
 			
 			if(rs.next()) {
 				totalOwner = rs.getInt("count(*)");
 			}
 			
 			modelOwners = new ModelOwner[totalOwner];
-			rs = comandoSql.executeQuery("select * from pessoas order by nome;");
+			rs = comandSql.executeQuery("select * from pessoas order by nome;");
 			
 			while(rs.next()) {
 				if(rs.getString("rg") != null) {
@@ -211,7 +168,7 @@ public class ControlerOwner {
 				i++;
 			}
 
-			closeConectionOwner(conn);
+			closeConection(conn);
 			
 		} catch(SQLException e) {
 			System.out.println("Erro de select: " + e);
@@ -222,18 +179,18 @@ public class ControlerOwner {
 		
 		int i = 0;
 		try {
-			conectingOwner();
+			conecting();
 			
-			conn = conectingOwner();
-			comandoSql = conn.createStatement();
-			rs = comandoSql.executeQuery("select count(*) from pessoas p inner join apartamentopessoa a on p.cpf = a.cpf  inner join apartamentos ap on a.apartamento = ap.apartamento where ap." + consulta + " = " + appartment);
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select count(*) from pessoas p inner join apartamentopessoa a on p.cpf = a.cpf  inner join apartamentos ap on a.apartamento = ap.apartamento where ap." + consulta + " = " + appartment);
 			
 			if(rs.next()) {
 				totalOwner = rs.getInt("count(*)");
 			}
 			
 			modelOwners = new ModelOwner[totalOwner];
-			rs = comandoSql.executeQuery("select * from pessoas p inner join apartamentopessoa a on p.cpf = a.cpf  inner join apartamentos ap on a.apartamento = ap.apartamento where ap." + consulta + " = " + appartment + " order by nome");
+			rs = comandSql.executeQuery("select * from pessoas p inner join apartamentopessoa a on p.cpf = a.cpf  inner join apartamentos ap on a.apartamento = ap.apartamento where ap." + consulta + " = " + appartment + " order by nome");
 			
 			while(rs.next()) {
 				if(rs.getString("rg") != null) {
@@ -257,7 +214,7 @@ public class ControlerOwner {
 				i++;
 			}
 
-			closeConectionOwner(conn);
+			closeConection(conn);
 			
 		} catch(SQLException e) {
 			System.out.println("Erro de select: " + e);
@@ -267,22 +224,23 @@ public class ControlerOwner {
 	public void selectAppartments(String cnpj) {
 		int i = 0;
 		try {
-			conectingOwner();
-			conn = conectingOwner();
-			comandoSql = conn.createStatement();
-			rs = comandoSql.executeQuery("select count(*) from apartamentos where cnpj = '" + cnpj + "'");
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select count(*) from apartamentos where cnpj = '" + cnpj + "'");
 			if(rs.next()) {
 				totalOwner = rs.getInt("count(*)");
 			}
 			appartents = new int[totalOwner];
 			
-			rs = comandoSql.executeQuery("select * from apartamentos where cnpj = '" + cnpj + "'");
+			rs = comandSql.executeQuery("select * from apartamentos where cnpj = '" + cnpj + "'");
 			while(rs.next()) {
 				appartents[i] = rs.getInt("apartamento");
 				i++;
 			}
 			
-			closeConectionOwner(conn);
+			closeConection(conn);
 			
 		} catch (SQLException e) {
 			System.out.println("Erro de select: " + e);
@@ -293,13 +251,14 @@ public class ControlerOwner {
 	// Deletes
 	public void deleteOwner(String cpf) {
 		try {
-			conectingOwner();
-			conn = conectingOwner();
-			comandoSql = conn.createStatement();
-			comandoSql.executeUpdate("delete from apartamentopessoa where cpf = '" + cpf + "'");
-			comandoSql.executeUpdate("delete from pessoas where cpf = '" + cpf + "'");
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			comandSql.executeUpdate("delete from apartamentopessoa where cpf = '" + cpf + "'");
+			comandSql.executeUpdate("delete from pessoas where cpf = '" + cpf + "'");
 						
-			closeConectionOwner(conn);
+			closeConection(conn);
 			
 		} catch (SQLException e) {
 			System.out.println("Erro de delete: " + e);
@@ -309,19 +268,19 @@ public class ControlerOwner {
 	// Updates
 	public void updateOwner(String cpf, String name, String rg, String ddd, String phone, int appartment, String email) {
 		try {
-			conectingOwner();
-			conn = conectingOwner();
+			conecting();
 			
-			comandoSql = conn.createStatement();
-			comandoSql.executeUpdate("update apartamentopessoa set apartamento = " + appartment + " where cpf = '" + cpf + "'");
-			comandoSql.executeUpdate("update pessoas set nome = '" + name + "' where cpf = '" + cpf + "'");
-			comandoSql.executeUpdate("update pessoas set rg = '" + rg + "' where cpf = '" + cpf + "'");
-			comandoSql.executeUpdate("update pessoas set telefoneDdd = '" + ddd + "' where cpf = '" + cpf + "'");
-			comandoSql.executeUpdate("update pessoas set telefone = '" + phone + "' where cpf = '" + cpf + "'");
-			comandoSql.executeUpdate("update pessoas set email = '" + email + "' where cpf = '" + cpf + "'");
+			conn = conecting();
+			comandSql = conn.createStatement();
+			comandSql.executeUpdate("update apartamentopessoa set apartamento = " + appartment + " where cpf = '" + cpf + "'");
+			comandSql.executeUpdate("update pessoas set nome = '" + name + "' where cpf = '" + cpf + "'");
+			comandSql.executeUpdate("update pessoas set rg = '" + rg + "' where cpf = '" + cpf + "'");
+			comandSql.executeUpdate("update pessoas set telefoneDdd = '" + ddd + "' where cpf = '" + cpf + "'");
+			comandSql.executeUpdate("update pessoas set telefone = '" + phone + "' where cpf = '" + cpf + "'");
+			comandSql.executeUpdate("update pessoas set email = '" + email + "' where cpf = '" + cpf + "'");
 			System.out.println("Insert executado com sucesso: " + conn);
 			
-			closeConectionOwner(conn);
+			closeConection(conn);
 			
 			try {
 				for(int i = 0; i < totalOwner; i++) {

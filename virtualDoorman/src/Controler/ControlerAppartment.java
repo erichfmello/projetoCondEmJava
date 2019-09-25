@@ -4,7 +4,7 @@ import java.sql.*;
 
 import Model.ModelAppartamentThisFloor;
 
-public class ControlerAppartment {
+public class ControlerAppartment extends ControlerConection {
 	private int appartment;
 	private int floor;
 	private int finalNumber;
@@ -16,45 +16,19 @@ public class ControlerAppartment {
 	// Variaveis de geração dos model
 	public ModelAppartamentThisFloor[] modelAppartamentThisFloors;
 	
-	// Variaveis de conexao
-	Connection conn;
-	Statement comandoSql;
-	ResultSet rs;
-	
 	// Contrutor
 	public ControlerAppartment() {
 	}
 		
 	public ControlerAppartment(int appartment, int floor, int finalNumber, String block) {
+		super();
 		this.appartment = appartment;
 		this.floor = floor;
 		this.finalNumber = finalNumber;
 		this.block = block;
 	}
 	
-	public Connection connectingAppartment() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Drive localizado");
-			
-			String bdUrl = "jdbc:mysql://localhost:3306/virtualdoorman";
-			String bdUser = "root";
-			String bdPassword = "Pantru123";
-			
-			conn = DriverManager.getConnection(bdUrl, bdUser, bdPassword);
-			System.out.println("Conectado: " + conn);
-			
-			return conn;
-			
-		} catch (ClassNotFoundException e) {
-			System.out.println("Drive não localizado: " + e);
-			return null;
-		} catch (SQLException e) {
-			System.out.println("Erro na conexao: " + e);
-			return null;
-		}
-	}
-	
+	// Getter and setter
 	public int getAppartment() {
 		return appartment;
 	}
@@ -103,30 +77,6 @@ public class ControlerAppartment {
 		this.totalAppartmentThisFloor = totalAppartmentThisFloor;
 	}
 
-	public Connection getConn() {
-		return conn;
-	}
-
-	public void setConn(Connection conn) {
-		this.conn = conn;
-	}
-
-	public Statement getComandoSql() {
-		return comandoSql;
-	}
-
-	public void setComandoSql(Statement comandoSql) {
-		this.comandoSql = comandoSql;
-	}
-
-	public ResultSet getRs() {
-		return rs;
-	}
-
-	public void setRs(ResultSet rs) {
-		this.rs = rs;
-	}
-
 	public ModelAppartamentThisFloor[] getModelAppartamentThisFloors() {
 		return modelAppartamentThisFloors;
 	}
@@ -139,28 +89,18 @@ public class ControlerAppartment {
 		super();
 		this.modelAppartamentThisFloors = modelAppartamentThisFloors;
 	}
-
-	public void closeConectionApartment(Connection conn) {
-		try {
-			conn.close();
-			System.out.println("Conexão fechada: " + conn);
-			
-		} catch(SQLException e) {
-			System.out.println("Erro para fechar a conexão: " + e);
-
-		}
-	}
 	
+	// Inserts
 	public void insertAppartment(String cnpj) {
 		try {
-			connectingAppartment();
+			conecting();
 			
-			conn = connectingAppartment();
-			comandoSql = conn.createStatement();
-			comandoSql.executeUpdate("insert into apartamentos values(" + appartment + ", " + floor + ", " + finalNumber + ", " + block + ", " + cnpj + ")");
+			conn = conecting();
+			comandSql = conn.createStatement();
+			comandSql.executeUpdate("insert into apartamentos values(" + appartment + ", " + floor + ", " + finalNumber + ", " + block + ", " + cnpj + ")");
 			System.out.println("Dados inseridos com sucesso: " + conn);
 			
-			closeConectionApartment(conn);
+			closeConection(conn);
 			
 		} catch(SQLException e) {
 			System.out.println("Erro na inserção: " + e);
@@ -171,18 +111,18 @@ public class ControlerAppartment {
 	public void selectAppartment(int floor) {
 		int i = 0;
 		try {
-			connectingAppartment();
+			conecting();
 			
-			conn = connectingAppartment();
-			comandoSql = conn.createStatement();
-			rs = comandoSql.executeQuery("select count(*) from apartamentos where cnpj = '20' and apartamento between " + floor*10 + " and " + floor*20);
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select count(*) from apartamentos where cnpj = '20' and apartamento between " + floor*10 + " and " + floor*20);
 			
 			if(rs.next()) {
 				totalAppartmentThisFloor = rs.getInt("count(*)");
 			}
 			
 			modelAppartamentThisFloors = new ModelAppartamentThisFloor[totalAppartmentThisFloor];
-			rs = comandoSql.executeQuery("select * from apartamentos where cnpj = '20' and apartamento between " + floor*10 + " and " + floor*20);
+			rs = comandSql.executeQuery("select * from apartamentos where cnpj = '20' and apartamento between " + floor*10 + " and " + floor*20);
 			
 			while(rs.next()) {
 				appartment = rs.getInt("apartamento");
@@ -196,7 +136,7 @@ public class ControlerAppartment {
 			}
 			System.out.println("Select executado com sucesso: " + conn);
 			
-			closeConectionApartment(conn);
+			closeConection(conn);
 			
 			
 		} catch (SQLException e) {
@@ -206,17 +146,17 @@ public class ControlerAppartment {
 	
 	public void selectFloor(int appartment) {
 		try {
-			connectingAppartment();
+			conecting();
 			
-			conn = connectingAppartment();
-			comandoSql = conn.createStatement();
-			rs = comandoSql.executeQuery("select * from apartamentos where cnpj = '20' and apartamento = " + appartment);
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select * from apartamentos where cnpj = '20' and apartamento = " + appartment);
 			
 			while(rs.next()) {
 				this.floor = rs.getInt("andar");
 			}
 			
-			closeConectionApartment(conn);
+			closeConection(conn);
 			
 			System.out.println("Select executado com sucesso: " + conn);
 			

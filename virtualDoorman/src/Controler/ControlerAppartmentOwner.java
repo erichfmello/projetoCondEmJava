@@ -2,14 +2,9 @@ package Controler;
 
 import java.sql.*;
 
-public class ControlerAppartmentOwner {
+public class ControlerAppartmentOwner extends ControlerConection {
 	private int appartment;
 	private String cpf;
-	
-	// Variaveis de conexao
-	Connection conn;
-	Statement comandoSql;
-	ResultSet rs;
 	
 	// Construtores
 	public ControlerAppartmentOwner() {	
@@ -20,50 +15,17 @@ public class ControlerAppartmentOwner {
 		this.cpf = cpf;
 	}
 	
-	public Connection conectarAppartmentOwner() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Drive localizado");
-			
-			String bdUrl = "jdbc:mysql://localhost:3306/virtualdoorman";
-			String bdUser = "root";
-			String bdPassword = "Pantru123";
-			
-			conn = DriverManager.getConnection(bdUrl, bdUser, bdPassword);
-			System.out.println("Conectado: " + conn);
-			
-			return conn;
-			
-		} catch (ClassNotFoundException e) {
-			System.out.println("Drive não localizado: " + e);
-			return null;
-			
-		} catch (SQLException e) {
-			System.out.println("Problema na conexão: " + e);
-			return null;
-		}
-	}
-	
-	public void closeConectionAppartmentOwner(Connection conn) {
-		try {
-			conn.close();
-			System.out.println("Conexao fechada: " + conn);
-			
-		} catch(SQLException e) {
-			System.out.println("Erro para fechar conexao: " + e);
-			
-		}
-	}
-	
+	// Inserts
 	public void insertAppartmentOwner() {
 		try {
-			conectarAppartmentOwner();
-			conn = conectarAppartmentOwner();
-			comandoSql = conn.createStatement();
-			comandoSql.executeUpdate("insert into apartamentopessoa values(" + appartment + ", '" + cpf + "')");
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			comandSql.executeUpdate("insert into apartamentopessoa values(" + appartment + ", '" + cpf + "')");
 			System.out.println("Dados inseridos: " + conn);
 			
-			closeConectionAppartmentOwner(conn);
+			closeConection(conn);
 			
 		} catch (SQLException e) {
 			System.out.println("Erro insert: " + e);
