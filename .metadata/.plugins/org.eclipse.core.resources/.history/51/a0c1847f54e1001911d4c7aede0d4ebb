@@ -113,6 +113,11 @@ public class ViewRentalCommunAreasDetails {
 		frmRentalCommunAreasDetails.getContentPane().add(lblReservationDate);
 		
 		dateReservation = new JDateChooser();
+		/*				controlerAllGuest = new ControlerAllGuest(dateReservation.getDate());
+				controlerAllGuest.selectAllGuestDate();
+				
+				JOptionPane.showMessageDialog(null, controlerAllGuest.getDate());*/
+		
 		dateReservation.setDateFormatString("dd/MM/yyyy");
 		dateReservation.setBounds(110, 11, 100, 20);
 		frmRentalCommunAreasDetails.getContentPane().add(dateReservation);
