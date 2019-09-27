@@ -1,0 +1,11 @@
+package Controler;
+
+import java.util.Date;
+import Model.*;
+import java.sql.*;
+
+public class ControlerRentalCommunAreas {
+	private Date reservationDate;
+	private String cnpj;
+	private int reservationAppartament;
+}

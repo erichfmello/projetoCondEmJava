@@ -74,10 +74,10 @@ create table ModeloAluguel (
 
 create table Alugado (
     dataAluguel date,
-    cpf char(15) not null,
     cnpj varchar(20) not null,
+    apartamento int not null,
     primary key(dataAluguel),
-    constraint fk_Alugado_cpf foreign key(cpf) references pessoas (cpf),
+    constraint fk_Alugado_apartamento foreign key(apartamento) references apartamentos (apartamento),
     constraint fk_Alugado_cnpj foreign key(cnpj) references condominio (cnpj)
 );
 

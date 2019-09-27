@@ -1,0 +1,21 @@
+package Controler;
+
+import java.util.Date;
+import Model.*;
+import java.sql.*;
+
+public class ControlerRentalCommunAreas extends ControlerConection {
+	private Date reservationDate;
+	private String cnpj;
+	private int reservationAppartament;
+	
+	public ControlerRentalCommunAreas() {
+	}
+
+	public ControlerRentalCommunAreas(Date reservationDate, String cnpj, int reservationAppartament) {
+		super();
+		this.reservationDate = reservationDate;
+		this.cnpj = cnpj;
+		this.reservationAppartament = reservationAppartament;
+	}
+}

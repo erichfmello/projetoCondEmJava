@@ -25,6 +25,9 @@ import javax.swing.JList;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.beans.PropertyChangeEvent;
 
@@ -33,14 +36,19 @@ public class ViewRentalCommunAreasDetails {
 	public JFrame frmRentalCommunAreasDetails;
 	private JComboBox comboBoxAppartment;
 	private JDateChooser dateReservation;	
+	
 	// Variaveis
 	String cnpj;
 	int totalAppartaments;
 	String[] appartamentsNumber;
 	
+	private Date reservationDate = new Date();
+	private int reservationAppartament;
+	
 	// Variaveis do controler
 	ControlerAppartment controlerAppartment;
 	ControlerAllGuest controlerAllGuest;
+	ControlerRentalCommunAreas controlerRentalCommunAreas;
 	
 	// Variaveis das View
 	ViewAddGuest viewAddGuest;
@@ -126,6 +134,17 @@ public class ViewRentalCommunAreasDetails {
 		frmRentalCommunAreasDetails.getContentPane().add(lblAppartament);
 		
 		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				reservationDate = dateReservation.getDate();
+				reservationAppartament = Integer.parseInt(comboBoxAppartment.getSelectedItem().toString());
+				
+				controlerRentalCommunAreas = new ControlerRentalCommunAreas(reservationDate, cnpj, 11);
+				controlerRentalCommunAreas.insertReservation(cnpj);
+				
+				frmRentalCommunAreasDetails.dispose();
+			}
+		});
 		btnOk.setBounds(220, 7, 89, 23);
 		frmRentalCommunAreasDetails.getContentPane().add(btnOk);
 		
