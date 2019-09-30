@@ -81,6 +81,15 @@ create table Alugado (
     constraint fk_Alugado_cnpj foreign key(cnpj) references condominio (cnpj)
 );
 
+create table ModeloAluguelAlugado(
+    cnpj varchar(20),
+    descricao varchar(50),
+    dataAluguel date,
+    primary key (cnpj, descricao, dataAluguel),
+    constraint fk_ModeloAluguelAlugado_descricao foreign key(cnpj, descricao) references ModeloAluguel(cnpj, descricao),
+    constraint fk_ModeloAluguelAlugado_dataAluguel foreign key(dataAluguel) references alugado(dataAluguel)
+);
+
 create table alugadoConvidado (
     dataAluguel date,
     documentoConvidado varchar(20),

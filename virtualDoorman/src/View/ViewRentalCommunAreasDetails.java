@@ -30,17 +30,24 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.beans.PropertyChangeEvent;
+import javax.swing.SwingConstants;
 
 public class ViewRentalCommunAreasDetails {
 
 	public JFrame frmRentalCommunAreasDetails;
 	private JComboBox comboBoxAppartment;
+	JComboBox comboBoxRentalModel;
 	private JDateChooser dateReservation;	
 	
 	// Variaveis
 	String cnpj;
-	int totalAppartaments;
+	String description;
 	String[] appartamentsNumber;
+	int totalAppartaments;
+
+	String[] rentalModel;
+	double[] rentalModelPrice;
+	int totalRentalModel;
 	
 	private Date reservationDate = new Date();
 	private int reservationAppartament;
@@ -49,6 +56,7 @@ public class ViewRentalCommunAreasDetails {
 	ControlerAppartment controlerAppartment;
 	ControlerAllGuest controlerAllGuest;
 	ControlerRentalCommunAreas controlerRentalCommunAreas;
+	ControlerRentalModel controlerRentalModel;
 	
 	// Variaveis das View
 	ViewAddGuest viewAddGuest;
@@ -76,8 +84,9 @@ public class ViewRentalCommunAreasDetails {
 		initialize();
 	}
 	
-	public ViewRentalCommunAreasDetails(String cnpj) {
+	public ViewRentalCommunAreasDetails(String cnpj, ControlerRentalModel controlerRentalModel) {
 		this.cnpj = cnpj;
+		this.controlerRentalModel = controlerRentalModel;
 		initialize();
 	}
 
@@ -95,6 +104,14 @@ public class ViewRentalCommunAreasDetails {
 				totalAppartaments = controlerAppartment.getTotalAppartaments();
 				appartamentsNumber = new String[totalAppartaments];
 				
+				controlerRentalModel = new ControlerRentalModel();
+				controlerRentalModel.selectAllRentalModel(cnpj);
+				//JOptionPane.showMessageDialog(null, controlerRentalModel.getModelRentalModel()[0].getDescription());
+				
+				totalRentalModel = controlerRentalModel.getTotalRentalModel();
+				rentalModel = new String[totalRentalModel];
+				rentalModelPrice = new double[totalRentalModel];
+				
 				DefaultComboBoxModel defaultListModelAppartamentsNumber = new DefaultComboBoxModel();
 				defaultListModelAppartamentsNumber.addElement("apto");
 				for(int i = 0; i < totalAppartaments; i++) {
@@ -104,6 +121,15 @@ public class ViewRentalCommunAreasDetails {
 				}
 				comboBoxAppartment.setModel(defaultListModelAppartamentsNumber);
 				
+				DefaultComboBoxModel defaultComboBoxModelRentalModel = new DefaultComboBoxModel();
+				defaultComboBoxModelRentalModel.addElement("Modelo de aluguel");
+				for(int i = 0; i < totalRentalModel; i++) {
+					rentalModel[i] = String.valueOf(controlerRentalModel.getModelRentalModel()[i].getDescription());
+					rentalModelPrice[i] = controlerRentalModel.getModelRentalModel()[i].getPrice();
+					defaultComboBoxModelRentalModel.addElement(rentalModel[i] + " - R$" + rentalModelPrice[i]);
+				}
+				comboBoxRentalModel.setModel(defaultComboBoxModelRentalModel);
+				
 			}
 		});
 		frmRentalCommunAreasDetails.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\aluguelr2.png"));
@@ -112,7 +138,7 @@ public class ViewRentalCommunAreasDetails {
 		Dimension dimension = tk.getScreenSize();
 		int width = dimension.width/2 - 340/2;
 		int height = dimension.height/2 - 558/2;
-		frmRentalCommunAreasDetails.setBounds(width, height, 339, 120);
+		frmRentalCommunAreasDetails.setBounds(width, height, 339, 170);
 		frmRentalCommunAreasDetails.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmRentalCommunAreasDetails.getContentPane().setLayout(null);
 		
@@ -138,8 +164,9 @@ public class ViewRentalCommunAreasDetails {
 			public void actionPerformed(ActionEvent e) {
 				reservationDate = dateReservation.getDate();
 				reservationAppartament = Integer.parseInt(comboBoxAppartment.getSelectedItem().toString());
+				description = rentalModel[comboBoxRentalModel.getSelectedIndex() - 1];
 				
-				controlerRentalCommunAreas = new ControlerRentalCommunAreas(reservationDate, cnpj, 11);
+				controlerRentalCommunAreas = new ControlerRentalCommunAreas(reservationDate, cnpj, description, reservationAppartament);
 				controlerRentalCommunAreas.insertReservation(cnpj);
 				
 				frmRentalCommunAreasDetails.dispose();
@@ -156,5 +183,14 @@ public class ViewRentalCommunAreasDetails {
 		});
 		btnCancel.setBounds(220, 41, 89, 23);
 		frmRentalCommunAreasDetails.getContentPane().add(btnCancel);
+		
+		JLabel lblRentalModel = new JLabel("Modelo de aluguel:");
+		lblRentalModel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRentalModel.setBounds(10, 70, 299, 14);
+		frmRentalCommunAreasDetails.getContentPane().add(lblRentalModel);
+		
+		comboBoxRentalModel = new JComboBox();
+		comboBoxRentalModel.setBounds(10, 95, 299, 20);
+		frmRentalCommunAreasDetails.getContentPane().add(comboBoxRentalModel);
 	}
 }

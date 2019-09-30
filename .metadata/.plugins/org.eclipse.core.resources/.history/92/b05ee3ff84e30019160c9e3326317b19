@@ -1,0 +1,44 @@
+package Model;
+
+import java.util.Date;
+
+public class ModelRentalCommunAreas {
+	private String reservationDate;
+	private String cnpj;
+	private int reservationAppartament;
+	
+	// Construtores
+	public ModelRentalCommunAreas() {
+	}
+
+	public ModelRentalCommunAreas(String reservationDate, String cnpj, int reservationAppartament) {
+		this.reservationDate = reservationDate;
+		this.cnpj = cnpj;
+		this.reservationAppartament = reservationAppartament;
+	}
+
+	// getter and setter
+	public String getReservationDate() {
+		return reservationDate;
+	}
+
+	public void setReservationDate(String reservationDate) {
+		this.reservationDate = reservationDate;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public int getReservationAppartament() {
+		return reservationAppartament;
+	}
+
+	public void setReservationAppartament(int reservationAppartament) {
+		this.reservationAppartament = reservationAppartament;
+	}
+}

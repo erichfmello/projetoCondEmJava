@@ -1,0 +1,148 @@
+package Controler;
+
+import java.util.Date;
+
+import javax.swing.JOptionPane;
+
+import Model.*;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+
+public class ControlerRentalCommunAreas extends ControlerConection {
+	private Date reservationDate;
+	private String cnpj;
+	private int reservationAppartament;
+	
+	private int totalReservationDate;
+	
+	// Variavais do Model
+	private ModelRentalCommunAreas[] modelRentalCommunAreas;
+	
+	// Construtores
+	public ControlerRentalCommunAreas() {
+	}
+
+	public ControlerRentalCommunAreas(Date reservationDate, String cnpj, int reservationAppartament) {
+		super();
+		this.reservationDate = reservationDate;
+		this.cnpj = cnpj;
+		this.reservationAppartament = reservationAppartament;
+	}
+
+	// getter and setter
+	public Date getReservationDate() {
+		return reservationDate;
+	}
+
+	public void setReservationDate(Date reservationDate) {
+		this.reservationDate = reservationDate;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public int getReservationAppartament() {
+		return reservationAppartament;
+	}
+
+	public void setReservationAppartament(int reservationAppartament) {
+		this.reservationAppartament = reservationAppartament;
+	}
+		
+	public int getTotalReservationDate() {
+		return totalReservationDate;
+	}
+
+	public void setTotalReservationDate(int totalReservationDate) {
+		this.totalReservationDate = totalReservationDate;
+	}
+
+	public ModelRentalCommunAreas[] getModelRentalCommunAreas() {
+		return modelRentalCommunAreas;
+	}
+	
+	public void setModelRentalCommunAreas(ModelRentalCommunAreas[] modelRentalCommunAreas) {
+		this.modelRentalCommunAreas = modelRentalCommunAreas;
+	}
+		
+	// Selects
+	public void selectAllReservationDates(String cnpj) {
+		int i = 0;		
+		
+		try {
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select count(*) from alugado where cnpj = '" + cnpj + "'");
+			
+			if(rs.next()) {
+				totalReservationDate = rs.getInt("count(*)");
+			}
+			modelRentalCommunAreas = new ModelRentalCommunAreas[totalReservationDate];
+			
+			rs = comandSql.executeQuery("select * from alugado where cnpj = '" + cnpj + "' order by dataAluguel;");
+			
+			while(rs.next()) {
+				reservationDate = rs.getDate("dataAluguel");
+				this.cnpj = rs.getString("cnpj");
+				reservationAppartament = rs.getInt("apartamento");
+				
+				modelRentalCommunAreas[i] = new ModelRentalCommunAreas(reservationDate, cnpj, reservationAppartament);
+				i++;
+			}
+			
+			closeConection(conn);
+			
+		} catch (SQLException e) {
+			System.out.println("Erro no select: " + e);
+			
+		}
+	}
+
+	// Inserts
+	public void insertReservation(String cnpj) {
+		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+		
+		
+		try {
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			comandSql.executeUpdate("insert into alugado values('" + df.format(reservationDate) + "', '" + cnpj + "', " + reservationAppartament + ")");
+			
+			closeConection(conn);
+			
+		} catch (SQLException e) {
+			System.out.println("Erro no insert: " + e);
+		}
+	}
+	
+	// Updates
+	
+	// Deletes
+	public void deleteReservationDate(Date reservationDate, String cnpj) {
+		//DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+		try {
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			comandSql.executeUpdate("delete from alugado where dataAluguel = '" + reservationDate + "' and cnpj = '" + 20 + "'");
+			
+			closeConection(conn);
+			
+		} catch (SQLException e) {
+			System.out.println("Erro no delete: " + e);
+		}
+	}
+}

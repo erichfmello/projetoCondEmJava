@@ -10,6 +10,7 @@ import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 
+import Controler.ControlerRentalCommunAreas;
 import Controler.ControlerRentalModel;
 
 import javax.swing.JList;
@@ -22,14 +23,21 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ViewRentalCommunArea {
 
 	public JFrame frmRentalCommunAreas;
 	private JList listRentalModel;
+	private JList listRental;
 	int totalRentalModel = 0;
+	int totalReservationDate = 0;
 	private String[] description;
 	private double[] price;
+	private Date reservationDate = new Date();
+	private int reservationAppartament;
 	
 	// Variaveis comuns
 	private String cnpj;
@@ -40,6 +48,7 @@ public class ViewRentalCommunArea {
 	
 	// Variaveis do controler
 	ControlerRentalModel controRentalModel = new ControlerRentalModel();
+	ControlerRentalCommunAreas controlerRentalCommunAreas = new ControlerRentalCommunAreas();
 
 	/**
 	 * Launch the application.
@@ -79,6 +88,7 @@ public class ViewRentalCommunArea {
 			@Override
 			public void windowActivated(WindowEvent arg0) {
 				seedListRentalModel();
+				seedListRentalDate();
 				
 			}
 		});
@@ -97,13 +107,13 @@ public class ViewRentalCommunArea {
 		scrollPaneRental.setBounds(10, 11, 300, 158);
 		frmRentalCommunAreas.getContentPane().add(scrollPaneRental);
 		
-		JList listRental = new JList();
+		listRental = new JList();
 		scrollPaneRental.setViewportView(listRental);
 		
 		JButton btnNew = new JButton("Novo");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				viewRentalCommunAreasDetails = new ViewRentalCommunAreasDetails(cnpj);
+				viewRentalCommunAreasDetails = new ViewRentalCommunAreasDetails(cnpj, controRentalModel);
 				viewRentalCommunAreasDetails.frmRentalCommunAreasDetails.setVisible(true);
 			}
 		});
@@ -111,6 +121,18 @@ public class ViewRentalCommunArea {
 		frmRentalCommunAreas.getContentPane().add(btnNew);
 		
 		JButton btnApagar = new JButton("Apagar");
+		btnApagar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(listRental.isSelectionEmpty()) {
+					JOptionPane.showMessageDialog(null, "Selecionar uma data");
+				} else {
+					reservationDate = controlerRentalCommunAreas.getModelRentalCommunAreas()[listRental.getSelectedIndex()].getReservationDate();
+					
+					deleteReservationDate(reservationDate, cnpj);	
+					seedListRentalDate();
+				}
+			}
+		});
 		btnApagar.setBounds(326, 47, 100, 25);
 		frmRentalCommunAreas.getContentPane().add(btnApagar);
 		
@@ -178,7 +200,7 @@ public class ViewRentalCommunArea {
 		frmRentalCommunAreas.getContentPane().add(btnGuests);
 	}
 	
-	// Modularização
+	// Modularização - Povoação das list
 	private void seedListRentalModel() {
 		controRentalModel.selectAllRentalModel(cnpj);
 		
@@ -195,5 +217,27 @@ public class ViewRentalCommunArea {
 			defaultListModelAllRentalModel.add(i, description[i] + " - Valor: R$" + price[i]);
 		}
 		listRentalModel.setModel(defaultListModelAllRentalModel);
+	}
+	
+	private void seedListRentalDate() {
+		controlerRentalCommunAreas.selectAllReservationDates(cnpj);
+		
+		totalReservationDate = controlerRentalCommunAreas.getTotalReservationDate();
+		
+		DefaultListModel defalDefaultListModelAllRentalData = new DefaultListModel();
+		for(int i = 0; i < totalReservationDate; i++) {
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			
+			reservationDate = controlerRentalCommunAreas.getModelRentalCommunAreas()[i].getReservationDate();
+			reservationAppartament = controlerRentalCommunAreas.getModelRentalCommunAreas()[i].getReservationAppartament();
+			
+			defalDefaultListModelAllRentalData.add(i, df.format(reservationDate) + " - Apartamento: " + reservationAppartament);
+		}
+		listRental.setModel(defalDefaultListModelAllRentalData);
+	}
+	
+	// Modularização - Apagar
+	private void deleteReservationDate(Date reservationDate, String cnpj) {
+		controlerRentalCommunAreas.deleteReservationDate(reservationDate, cnpj);
 	}
 }
