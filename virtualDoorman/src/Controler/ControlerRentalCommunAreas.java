@@ -99,7 +99,7 @@ public class ControlerRentalCommunAreas extends ControlerConection {
 			}
 			modelRentalCommunAreas = new ModelRentalCommunAreas[totalReservationDate];
 			
-			rs = comandSql.executeQuery("select * from alugado a inner join ModeloAluguelalugado ma on a.dataAluguel = ma.dataAluguel where a.cnpj = '" + cnpj + "'");
+			rs = comandSql.executeQuery("select * from alugado a inner join ModeloAluguelalugado ma on a.dataAluguel = ma.dataAluguel where a.cnpj = '" + cnpj + "' order by a.dataAluguel");
 			
 			while(rs.next()) {
 				reservationDate = rs.getDate("dataAluguel");

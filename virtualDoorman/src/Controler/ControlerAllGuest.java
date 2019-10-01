@@ -1,33 +1,33 @@
 package Controler;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 import Model.*;
 
 public class ControlerAllGuest extends ControlerConection {
 	private String documentGuest;
     private String name;
-    
-    private Date date;
-    
-    private int totalGuest;
-    
-    // Variaveis Model
-    ModelRentalGuest[] modelRentalGuest;
-    
-    // Contrutores
-    public ControlerAllGuest() {
+	private Date date;
+	
+	private int totalReservation;
+	
+	// Variaveis dos model
+	ModelGuest[] modelGuests;
+	ModelRentalGuest[] modelRentalGuests;
+	
+	// Contrutores
+	public ControlerAllGuest() {
 	}
 
-	public ControlerAllGuest(String documentGuest, String name) {
+	public ControlerAllGuest(String documentGuest, String name, Date date) {
 		super();
 		this.documentGuest = documentGuest;
 		this.name = name;
-	}
-	
-	public ControlerAllGuest(Date date) {
-		super();
 		this.date = date;
 	}
 
@@ -51,13 +51,39 @@ public class ControlerAllGuest extends ControlerConection {
 	public Date getDate() {
 		return date;
 	}
-	
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
-		
+	
+	public int getTotalReservation() {
+		return totalReservation;
+	}
+
+	public void setTotalReservation(int totalReservation) {
+		this.totalReservation = totalReservation;
+	}
+
+	public ModelGuest[] getModelGuests() {
+		return modelGuests;
+	}
+
+	public void setModelGuests(ModelGuest[] modelGuests) {
+		this.modelGuests = modelGuests;
+	}
+
+	public ModelRentalGuest[] getModelRentalGuests() {
+		return modelRentalGuests;
+	}
+
+	public void setModelRentalGuests(ModelRentalGuest[] modelRentalGuests) {
+		this.modelRentalGuests = modelRentalGuests;
+	}
+
 	// Selects
-	public void selectAllGuestDate() {
+	public void selectAllGuests(Date reservationDate) {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
 		int i = 0;
 		
 		try {
@@ -65,37 +91,43 @@ public class ControlerAllGuest extends ControlerConection {
 			
 			conn = conecting();
 			comandSql = conn.createStatement();
-			rs = comandSql.executeQuery("select count(*) from convidado c inner join alugadoConvidado ac on c.documentoConvidado = ac.documentoConvidado where dataAluguel = " + date);
+			rs = comandSql.executeQuery("select count(*) from convidado c inner join alugadoconvidado ac on c.documentoConvidado = ac.documentoConvidado where dataAluguel = '" + df.format(reservationDate) + "'");
 			if(rs.next()) {
-				totalGuest = rs.getInt("count(*)");
+				totalReservation = rs.getInt("count(*)");
 			}
-			modelRentalGuest = new ModelRentalGuest[totalGuest];
-						
-			rs = comandSql.executeQuery("select * from convidado c inner join alugadoConvidado ac on c.documentoConvidado = ac.documentoConvidado where dataAluguel = " + date);
+
+			modelGuests = new ModelGuest[totalReservation];
+			modelRentalGuests = new ModelRentalGuest[totalReservation];
+			
+			rs = comandSql.executeQuery("select * from convidado c inner join alugadoconvidado ac on c.documentoConvidado = ac.documentoConvidado where dataAluguel = '" + df.format(reservationDate) + "' order by nome");
 			while(rs.next()) {
-				date = rs.getDate("dataAluguel");
 				documentGuest = rs.getString("documentoConvidado");
+			    name = rs.getString("nome");
+				date = reservationDate;
 				
-				modelRentalGuest[i] = new ModelRentalGuest(date, documentGuest);
-				
+				modelGuests[i] = new ModelGuest(documentGuest, name);
+				modelRentalGuests[i] = new ModelRentalGuest(date, documentGuest);
 				i++;
 			}
-				
-			closeConection(conn);
 			
+			closeConection(conn);
 		} catch (SQLException e) {
 			System.out.println("Erro no select: " + e);
+			
 		}
 	}
-
+	
 	// Inserts
-	public void insertGuest() {
+	public void insertNewGuest() {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
 		try {
 			conecting();
 			
 			conn = conecting();
 			comandSql = conn.createStatement();
-			comandSql.executeUpdate("insert into convidado values ('" + documentGuest + "', '" + name + "')");
+			comandSql.executeUpdate("insert into convidado values('" + documentGuest + "', '" + name + "')");
+			comandSql.executeUpdate("insert into alugadoconvidado values('" + df.format(date) + "', '" + documentGuest + "')");
 			
 			closeConection(conn);
 			
@@ -105,4 +137,23 @@ public class ControlerAllGuest extends ControlerConection {
 		}
 	}
 	
+	// Updates
+	
+	// Delets
+	public void deleteGuest(String documentGuest) {
+		try {
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			comandSql.executeUpdate("delete from alugadoconvidado where documentoConvidado = '" + documentGuest + "'");
+			comandSql.executeUpdate("delete from convidado where documentoConvidado = '" + documentGuest + "'");
+			
+			closeConection(conn);
+			
+		} catch (SQLException e) {
+			System.out.println("Erro no delete: " + e); 
+		}
+		
+	}
 }

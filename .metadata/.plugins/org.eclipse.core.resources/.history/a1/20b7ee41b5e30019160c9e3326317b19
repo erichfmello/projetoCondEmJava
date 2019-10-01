@@ -1,0 +1,93 @@
+package View;
+
+import java.awt.Dimension;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
+import javax.swing.JPanel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class ViewAllGuest {
+
+	public JFrame frmAllGuests;
+	private JScrollPane scrollPaneAllGuests;
+	private JList listAllGuests;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewAllGuest window = new ViewAllGuest();
+					window.frmAllGuests.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewAllGuest() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmAllGuests = new JFrame();
+		frmAllGuests.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\aluguelr2.png"));
+		frmAllGuests.setTitle("Convidados");
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension dimension = tk.getScreenSize();
+		int width = dimension.width/2 - 600/2;
+		int height = dimension.height/2 - 550/2;
+		frmAllGuests.setBounds(width, height, 600, 550);
+		frmAllGuests.setResizable(false);
+		frmAllGuests.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAllGuests.getContentPane().setLayout(null);
+		
+		scrollPaneAllGuests = new JScrollPane();
+		scrollPaneAllGuests.setBounds(10, 34, 442, 466);
+		frmAllGuests.getContentPane().add(scrollPaneAllGuests);
+		
+		listAllGuests = new JList();
+		scrollPaneAllGuests.setViewportView(listAllGuests);
+		
+		JButton btnOk = new JButton("Ok");
+		btnOk.setBounds(485, 9, 90, 25);
+		frmAllGuests.getContentPane().add(btnOk);
+		
+		JLabel lblAllGuests = new JLabel("Lista de convidados - Dia: ");
+		lblAllGuests.setBounds(10, 9, 442, 14);
+		frmAllGuests.getContentPane().add(lblAllGuests);
+		
+		JButton btnAddGuest = new JButton("Adicionar");
+		btnAddGuest.setBounds(485, 45, 90, 25);
+		frmAllGuests.getContentPane().add(btnAddGuest);
+		
+		JButton btnDelete = new JButton("Apagar");
+		btnDelete.setBounds(485, 81, 90, 25);
+		frmAllGuests.getContentPane().add(btnDelete);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmAllGuests.dispose();
+			}
+		});
+		btnCancelar.setBounds(485, 475, 90, 25);
+		frmAllGuests.getContentPane().add(btnCancelar);
+	}
+}

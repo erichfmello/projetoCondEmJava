@@ -1,0 +1,46 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
+
+public class ViewAllGuest {
+
+	public JFrame frmAllGuests;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewAllGuest window = new ViewAllGuest();
+					window.frmAllGuests.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewAllGuest() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmAllGuests = new JFrame();
+		frmAllGuests.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\aluguelr2.png"));
+		frmAllGuests.setTitle("Convidados");
+		frmAllGuests.setBounds(100, 100, 450, 300);
+		frmAllGuests.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+}

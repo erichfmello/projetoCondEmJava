@@ -45,6 +45,7 @@ public class ViewRentalCommunArea {
 	// Variaveis de View
 	ViewRentalModel viewRenalModel;
 	ViewRentalCommunAreasDetails viewRentalCommunAreasDetails;
+	ViewAllGuest viewAllGuest;
 	
 	// Variaveis do controler
 	ControlerRentalModel controRentalModel = new ControlerRentalModel();
@@ -96,15 +97,15 @@ public class ViewRentalCommunArea {
 		frmRentalCommunAreas.setTitle("Aluguel de areas");
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension dimension = tk.getScreenSize();
-		int width = dimension.width/2 - 139;
+		int width = dimension.width/2 - 500/2;
 		int height = dimension.height/2 - 150;
-		frmRentalCommunAreas.setBounds(width, height, 446, 378);
+		frmRentalCommunAreas.setBounds(width, height, 500, 378);
 		frmRentalCommunAreas.setResizable(false);
 		frmRentalCommunAreas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmRentalCommunAreas.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPaneRental = new JScrollPane();
-		scrollPaneRental.setBounds(10, 11, 300, 158);
+		scrollPaneRental.setBounds(10, 11, 364, 158);
 		frmRentalCommunAreas.getContentPane().add(scrollPaneRental);
 		
 		listRental = new JList();
@@ -117,7 +118,7 @@ public class ViewRentalCommunArea {
 				viewRentalCommunAreasDetails.frmRentalCommunAreasDetails.setVisible(true);
 			}
 		});
-		btnNew.setBounds(326, 11, 100, 25);
+		btnNew.setBounds(384, 11, 100, 25);
 		frmRentalCommunAreas.getContentPane().add(btnNew);
 		
 		JButton btnApagar = new JButton("Apagar");
@@ -133,7 +134,7 @@ public class ViewRentalCommunArea {
 				}
 			}
 		});
-		btnApagar.setBounds(326, 47, 100, 25);
+		btnApagar.setBounds(384, 47, 100, 25);
 		frmRentalCommunAreas.getContentPane().add(btnApagar);
 		
 		JButton btnOk = new JButton("Ok");
@@ -143,7 +144,7 @@ public class ViewRentalCommunArea {
 				frmRentalCommunAreas.dispose();
 			}
 		});
-		btnOk.setBounds(326, 83, 100, 25);
+		btnOk.setBounds(384, 83, 100, 25);
 		frmRentalCommunAreas.getContentPane().add(btnOk);
 		
 		JButton btnModeloDeAlugual = new JButton("Modelo");
@@ -160,11 +161,11 @@ public class ViewRentalCommunArea {
 				
 			}
 		});
-		btnModeloDeAlugual.setBounds(326, 182, 100, 25);
+		btnModeloDeAlugual.setBounds(384, 182, 100, 25);
 		frmRentalCommunAreas.getContentPane().add(btnModeloDeAlugual);
 		
 		JScrollPane scrollPaneRentalModel = new JScrollPane();
-		scrollPaneRentalModel.setBounds(10, 180, 300, 158);
+		scrollPaneRentalModel.setBounds(10, 180, 364, 158);
 		frmRentalCommunAreas.getContentPane().add(scrollPaneRentalModel);
 		
 		listRentalModel = new JList();
@@ -185,7 +186,7 @@ public class ViewRentalCommunArea {
 				
 			}
 		});
-		btnDeleteModel.setBounds(326, 216, 100, 25);
+		btnDeleteModel.setBounds(384, 216, 100, 25);
 		frmRentalCommunAreas.getContentPane().add(btnDeleteModel);
 		
 		JButton btnGuests = new JButton("Convidados");
@@ -193,10 +194,15 @@ public class ViewRentalCommunArea {
 			public void actionPerformed(ActionEvent arg0) {
 				if(listRental.isSelectionEmpty()) {
 					JOptionPane.showMessageDialog(null, "Selecione a data do evento");
+				} else {
+					reservationDate = controlerRentalCommunAreas.getModelRentalCommunAreas()[listRental.getSelectedIndex()].getReservationDate();
+					viewAllGuest = new ViewAllGuest(cnpj, reservationDate);
+					viewAllGuest.frmAllGuests.setVisible(true);
+					
 				}
 			}
 		});
-		btnGuests.setBounds(326, 119, 100, 25);
+		btnGuests.setBounds(384, 119, 100, 25);
 		frmRentalCommunAreas.getContentPane().add(btnGuests);
 	}
 	
@@ -231,7 +237,7 @@ public class ViewRentalCommunArea {
 			reservationDate = controlerRentalCommunAreas.getModelRentalCommunAreas()[i].getReservationDate();
 			reservationAppartament = controlerRentalCommunAreas.getModelRentalCommunAreas()[i].getReservationAppartament();
 			
-			defalDefaultListModelAllRentalData.add(i, df.format(reservationDate) + " - Apartamento: " + reservationAppartament);
+			defalDefaultListModelAllRentalData.add(i, df.format(reservationDate) + " - Apartamento: " + reservationAppartament + " - " + controRentalModel.getModelRentalModel()[i].getDescription());
 		}
 		listRental.setModel(defalDefaultListModelAllRentalData);
 	}

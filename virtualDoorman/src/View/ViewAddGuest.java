@@ -6,11 +6,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Toolkit;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 import javax.tools.Tool;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import Controler.*;
 
@@ -23,6 +25,7 @@ public class ViewAddGuest {
 	// Variaveis comuns
 	private String name;
 	private String document;
+	private Date reservationDate;
 	
 	// Variaveis do controler
 	ControlerAllGuest controlerAllGuest;
@@ -48,6 +51,11 @@ public class ViewAddGuest {
 	 * Create the application.
 	 */
 	public ViewAddGuest() {
+		initialize();
+	}
+	
+	public ViewAddGuest(Date reservationDate) {
+		this.reservationDate = reservationDate;
 		initialize();
 	}
 
@@ -90,8 +98,8 @@ public class ViewAddGuest {
 				name = txtName.getText();
 				document = txtDocument.getText();
 				
-				controlerAllGuest = new ControlerAllGuest(document, name);
-				controlerAllGuest.insertGuest();
+				controlerAllGuest = new ControlerAllGuest(document, name, reservationDate);
+				controlerAllGuest.insertNewGuest();
 				
 				frmAddGuest.dispose();
 			}

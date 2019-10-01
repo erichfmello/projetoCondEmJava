@@ -90,12 +90,6 @@ create table ModeloAluguelAlugado(
     constraint fk_ModeloAluguelAlugado_dataAluguel foreign key(dataAluguel) references alugado(dataAluguel)
 );
 
-create table alugadoConvidado (
-    dataAluguel date,
-    documentoConvidado varchar(20),
-    primary key(dataAluguel, documentoConvidado)
-);
-
 create table convidado (
     documentoConvidado varchar(20),
     nome varchar(50) not null,
