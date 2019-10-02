@@ -1,0 +1,46 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
+
+public class ViewAllOccurence {
+
+	public JFrame frmViewAllOccurrence;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewAllOccurence window = new ViewAllOccurence();
+					window.frmViewAllOccurrence.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewAllOccurence() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmViewAllOccurrence = new JFrame();
+		frmViewAllOccurrence.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\livroNegro.png"));
+		frmViewAllOccurrence.setTitle("Livro negro");
+		frmViewAllOccurrence.setBounds(100, 100, 450, 300);
+		frmViewAllOccurrence.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+}

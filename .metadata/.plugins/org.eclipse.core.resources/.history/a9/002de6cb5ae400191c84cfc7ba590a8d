@@ -1,0 +1,92 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class ViewAllOccurence {
+
+	public JFrame frmViewAllOccurrence;
+	
+	// Variaveis Comuns
+	private String cnpj;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewAllOccurence window = new ViewAllOccurence();
+					window.frmViewAllOccurrence.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewAllOccurence() {
+		initialize();
+	}
+	
+	public ViewAllOccurence(String cnpj) {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmViewAllOccurrence = new JFrame();
+		frmViewAllOccurrence.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\livroNegro.png"));
+		frmViewAllOccurrence.setTitle("Livro negro");
+		frmViewAllOccurrence.setBounds(100, 100, 340, 300);
+		frmViewAllOccurrence.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmViewAllOccurrence.getContentPane().setLayout(null);
+		
+		JLabel lblOcorrnci = new JLabel("Ocorr\u00EAncia:");
+		lblOcorrnci.setBounds(10, 11, 113, 14);
+		frmViewAllOccurrence.getContentPane().add(lblOcorrnci);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 36, 200, 214);
+		frmViewAllOccurrence.getContentPane().add(scrollPane);
+		
+		JList listAllOccurrence = new JList();
+		scrollPane.setViewportView(listAllOccurrence);
+		
+		JButton btnNew = new JButton("Novo");
+		btnNew.setBounds(220, 34, 90, 25);
+		frmViewAllOccurrence.getContentPane().add(btnNew);
+		
+		JButton btnEdit = new JButton("Editar");
+		btnEdit.setBounds(220, 70, 90, 25);
+		frmViewAllOccurrence.getContentPane().add(btnEdit);
+		
+		JButton btnDelete = new JButton("Excluir");
+		btnDelete.setBounds(220, 106, 90, 25);
+		frmViewAllOccurrence.getContentPane().add(btnDelete);
+		
+		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmViewAllOccurrence.dispose();
+			}
+		});
+		btnOk.setBounds(220, 225, 90, 25);
+		frmViewAllOccurrence.getContentPane().add(btnOk);
+	}
+
+}

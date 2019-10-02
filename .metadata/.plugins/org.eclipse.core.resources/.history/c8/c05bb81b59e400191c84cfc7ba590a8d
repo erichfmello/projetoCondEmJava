@@ -1,0 +1,44 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+
+public class ViewOccurenceDetails {
+
+	private JFrame frmOcorrncia;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewOccurenceDetails window = new ViewOccurenceDetails();
+					window.frmOcorrncia.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewOccurenceDetails() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmOcorrncia = new JFrame();
+		frmOcorrncia.setTitle("Ocorr\u00EAncia");
+		frmOcorrncia.setBounds(100, 100, 450, 300);
+		frmOcorrncia.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+}

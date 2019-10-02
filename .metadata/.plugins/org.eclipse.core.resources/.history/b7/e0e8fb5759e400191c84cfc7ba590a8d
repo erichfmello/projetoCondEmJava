@@ -1,0 +1,55 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
+import javax.swing.JLabel;
+
+public class ViewOccurenceDetails {
+
+	private JFrame frmOccurenceDetails;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewOccurenceDetails window = new ViewOccurenceDetails();
+					window.frmOccurenceDetails.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewOccurenceDetails() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmOccurenceDetails = new JFrame();
+		frmOccurenceDetails.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\livroNegro.png"));
+		frmOccurenceDetails.setTitle("Ocorr\u00EAncia");
+		frmOccurenceDetails.setBounds(100, 100, 450, 300);
+		frmOccurenceDetails.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmOccurenceDetails.getContentPane().setLayout(null);
+		
+		JLabel lblData = new JLabel("Data:");
+		lblData.setBounds(10, 11, 46, 14);
+		frmOccurenceDetails.getContentPane().add(lblData);
+		
+		JLabel lblApartamento = new JLabel("Apartamento:");
+		lblApartamento.setBounds(10, 36, 80, 14);
+		frmOccurenceDetails.getContentPane().add(lblApartamento);
+	}
+}

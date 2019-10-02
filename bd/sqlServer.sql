@@ -103,3 +103,12 @@ create table alugadoConvidado (
     constraint fk_alugadoConvidado_dataAluguel foreign key(dataAluguel) references alugado(dataAluguel),
     constraint fk_alugadoConvidado_documentoConvidado foreign key(documentoConvidado) references convidado(documentoConvidado)
 );
+
+create table livroNegro (
+    dataOcorrencia date,
+    apartamento int not null,
+    descricao varchar(255),
+    cnpj varchar(20),
+    primary key(dataOcorrencia, apartamento),
+    constraint fk_livroNegro_apartamento foreign key(apartamento) references apartamentos (apartamento)
+);

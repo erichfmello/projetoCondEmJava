@@ -44,6 +44,7 @@ public class ViewHome {
 	protected ViewOwner viewOwner;
 	protected ViewAllCommunAreas viewAllCommunAreas;
 	protected ViewRentalCommunArea viewRentalCommunArea;	
+	protected ViewAllOccurence viewAllOccurence;
 	
 	protected ControlerResidentialData controlerResidentialData = new ControlerResidentialData();
 	protected ControlerAppartment controlerAppartment = new ControlerAppartment();
@@ -161,6 +162,18 @@ public class ViewHome {
 		btnRentalCommunArea.setToolTipText("Alugar areas comuns");
 		btnRentalCommunArea.setIcon(new ImageIcon("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\aluguelr2.png"));
 		panel.add(btnRentalCommunArea);
+		
+		JButton btnBlackBook = new JButton("");
+		btnBlackBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlerAppartment.selectAllAppartaments(controlerResidentialData.getResidentialData().getCnpj());;
+				
+				viewAllOccurence = new ViewAllOccurence(controlerResidentialData.getResidentialData().getCnpj(), controlerAppartment);
+				viewAllOccurence.frmViewAllOccurrence.setVisible(true);
+			}
+		});
+		btnBlackBook.setIcon(new ImageIcon("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\livroNegro.png"));
+		panel.add(btnBlackBook);
 		
 		JPanel panel_1 = new JPanel();
 		frmVirtualDoorman.getContentPane().add(panel_1, BorderLayout.CENTER);
