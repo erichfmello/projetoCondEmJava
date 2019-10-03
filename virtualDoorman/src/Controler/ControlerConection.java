@@ -14,7 +14,7 @@ public class ControlerConection {
 			
 			String bdUrl = "jdbc:mysql://localhost:3306/virtualdoorman";
 			String bdUser = "root";
-			String bdPassword = "Pantru123";
+			String bdPassword = "";
 			
 			conn = DriverManager.getConnection(bdUrl, bdUser, bdPassword);
 			System.out.println("Conectado: " + conn);
@@ -22,7 +22,7 @@ public class ControlerConection {
 			return conn;
 			
 		} catch (ClassNotFoundException e) {
-			System.out.println("Drive n„o localizado: " + e);
+			System.out.println("Drive n√£o localizado: " + e);
 			return null;
 		} catch (SQLException e) {
 			System.out.println("Erro na conexao: " + e);
