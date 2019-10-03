@@ -1,0 +1,84 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
+
+public class ViewLogin {
+
+	private JFrame frmLogin;
+	private JTextField txtName;
+	private JPasswordField passwordField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewLogin window = new ViewLogin();
+					window.frmLogin.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewLogin() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmLogin = new JFrame();
+		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\principal.jpg"));
+		frmLogin.setTitle("Porteiro Virtual");
+		frmLogin.setBounds(100, 100, 450, 300);
+		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogin.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Nome:");
+		lblNewLabel.setBounds(10, 11, 46, 14);
+		frmLogin.getContentPane().add(lblNewLabel);
+		
+		JLabel lblSenha = new JLabel("Senha:");
+		lblSenha.setBounds(10, 36, 46, 14);
+		frmLogin.getContentPane().add(lblSenha);
+		
+		txtName = new JTextField();
+		txtName.setBounds(66, 8, 358, 20);
+		frmLogin.getContentPane().add(txtName);
+		txtName.setColumns(10);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(66, 33, 358, 20);
+		frmLogin.getContentPane().add(passwordField);
+		
+		JButton btnOk = new JButton("Ok");
+		btnOk.setBounds(334, 64, 90, 25);
+		frmLogin.getContentPane().add(btnOk);
+		
+		JButton btnCancel = new JButton("Cancelar");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnCancel.setBounds(334, 100, 90, 25);
+		frmLogin.getContentPane().add(btnCancel);
+	}
+}

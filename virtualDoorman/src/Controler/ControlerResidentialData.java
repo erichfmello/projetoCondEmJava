@@ -2,6 +2,8 @@ package Controler;
 
 import java.sql.*;
 
+import javax.swing.JOptionPane;
+
 import Model.ModelResidentialData;
 
 public class ControlerResidentialData extends ControlerConection {
@@ -61,13 +63,13 @@ public class ControlerResidentialData extends ControlerConection {
 		
 	}
 	
-	public void selectResidentialData() {
+	public void selectResidentialData(String cnpj) {
 		try {
 			conecting();
 			
 			conn = conecting();
 			comandSql = conn.createStatement();
-			rs = comandSql.executeQuery("select * from condominioendereco ce inner join condominio c on ce.cnpj = c.cnpj where c.cnpj = " + 20);
+			rs = comandSql.executeQuery("select * from condominioendereco ce inner join condominio c on ce.cnpj = c.cnpj where c.cnpj = '" + cnpj + "'");
 			
 			while(rs.next()) {
 				this.name = rs.getString("c.nome");
@@ -81,7 +83,7 @@ public class ControlerResidentialData extends ControlerConection {
 				this.floor = Integer.parseInt(rs.getString("c.andares"));
 				this.appartmentPerFloor = Integer.parseInt(rs.getString("c.apartamentosPorAndar"));
 				this.Block = Integer.parseInt(rs.getString("c.numerosDeBlocos"));
-				this.number = Integer.parseInt(rs.getString("ce.numero"));
+				this.number = Integer.parseInt(rs.getString("ce.numero"));				
 				
 				residentialData = new ModelResidentialData(name, address, cep, neighborhood, uf, cnpj, number, appartmentLastFloor, 
 						floor, appartmentPerFloor, Block);

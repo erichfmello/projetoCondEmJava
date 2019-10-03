@@ -1,0 +1,41 @@
+package Controler;
+
+import java.sql.SQLException;
+
+public class ControlerLogin extends ControlerConection {
+	private String cnpj;
+	
+	// Construtores
+	public ControlerLogin() {
+	}
+
+	public ControlerLogin(String cnpj) {
+		super();
+		this.cnpj = cnpj;
+	}
+
+	// getter and setter
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+	
+	// Selects
+	public void selectAllResidential(String login, String password) {
+		try {
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("");
+			
+			closeConection(conn);
+			
+		} catch (SQLException e) {
+			System.out.println("Erro no select: " + e);
+		}
+	}
+}

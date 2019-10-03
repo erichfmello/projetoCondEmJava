@@ -1,0 +1,8 @@
+package Controler;
+
+public class ControlerLogin {
+	private cnpj;
+	
+	public ControlerLogin() {
+	}
+}

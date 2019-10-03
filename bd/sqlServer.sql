@@ -32,9 +32,13 @@ create table apartamentos (
 	bloco char(10) not null,
 	cnpj varchar(20) not null,
 	primary key(apartamento),
-	constraint uk_cnpjApartamentos unique(cnpj),
 	constraint fk_cnpjApartamentos foreign key(cnpj) references condominio(cnpj)
 );
+
+alter table apartamentos drop primary key, add primary key(apartamento, cnpj);
+alter table condominioEndereco drop foreign key fk_cnpj;
+alter table condominioEndereco drop index uk_cnpj;
+alter table condominioEndereco add foreign key fk_cnpj(cnpj) references condominio(cnpj);
 
 create table pessoas (
 	cpf char(15) not null,
@@ -112,3 +116,16 @@ create table livroNegro (
     primary key(dataOcorrencia, apartamento),
     constraint fk_livroNegro_apartamento foreign key(apartamento) references apartamentos (apartamento)
 );
+
+create table login(
+    nomeUsuario varchar(50),
+    senhaUsuario varchar(10),
+    cnpj varchar(20),
+    tipo char(1),
+    primary key(nomeUsuario, cnpj),
+    constraint fk_login_cnpj foreign key(cnpj) references condominio(cnpj),
+    constraint ck_login_tipo check (tipo in ('a', 'm', 'p'))
+);
+
+insert into login values ('erich', '123', '20', 'a');
+insert into login values ('rafa', '123', '20', 'p');

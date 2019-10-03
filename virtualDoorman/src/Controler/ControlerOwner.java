@@ -129,7 +129,7 @@ public class ControlerOwner extends ControlerConection {
 	}
 	
 	// Selects	
-	public void selectOwner() {
+	public void selectOwner(String cnpj) {
 		
 		int i = 0;
 		try {
@@ -137,29 +137,29 @@ public class ControlerOwner extends ControlerConection {
 			
 			conn = conecting();
 			comandSql = conn.createStatement();
-			rs = comandSql.executeQuery("select count(*) from pessoas;");
+			rs = comandSql.executeQuery("select count(*) from pessoas p inner join apartamentoPessoa ap on p.cpf = ap.cpf inner join apartamentos aps on ap.apartamento = aps.apartamento where aps.cnpj = '" + cnpj + "'");
 			
 			if(rs.next()) {
 				totalOwner = rs.getInt("count(*)");
 			}
 			
 			modelOwners = new ModelOwner[totalOwner];
-			rs = comandSql.executeQuery("select * from pessoas order by nome;");
+			rs = comandSql.executeQuery("select * from pessoas p inner join apartamentoPessoa ap on p.cpf = ap.cpf inner join apartamentos aps on ap.apartamento = aps.apartamento where aps.cnpj = '" + cnpj + "'");
 			
 			while(rs.next()) {
-				if(rs.getString("rg") != null) {
-					cpf = rs.getString("cpf");
-					name = rs.getString("nome");
-					rg = rs.getString("rg");
-					ddd = rs.getString("telefoneDdd");
-					phone = rs.getString("telefone");
-					email = rs.getString("email");
+				if(rs.getString("p.rg") != null) {
+					cpf = rs.getString("p.cpf");
+					name = rs.getString("p.nome");
+					rg = rs.getString("p.rg");
+					ddd = rs.getString("p.telefoneDdd");
+					phone = rs.getString("p.telefone");
+					email = rs.getString("p.email");
 					
 					modelOwners[i] = new ModelOwner(cpf, name, rg, ddd, phone, email);
 					
 				} else {
-					cpf = rs.getString("cpf");
-					name = rs.getString("nome");
+					cpf = rs.getString("p.cpf");
+					name = rs.getString("p.nome");
 					
 					modelOwners[i] = new ModelOwner(cpf, name);
 					

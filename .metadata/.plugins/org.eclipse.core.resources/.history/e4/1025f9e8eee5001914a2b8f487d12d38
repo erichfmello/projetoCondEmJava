@@ -1,0 +1,80 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
+import javax.swing.JScrollPane;
+import javax.swing.JButton;
+import javax.swing.JList;
+
+public class ViewAllResidential {
+
+	protected JFrame frmAllResidential;
+	private JList listAllResidential;
+	private JScrollPane scrollPane;
+	
+	// Variaveis View
+	ViewLogin viewLogin;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewAllResidential window = new ViewAllResidential();
+					window.frmAllResidential.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewAllResidential() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmAllResidential = new JFrame();
+		frmAllResidential.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\principal.jpg"));
+		frmAllResidential.setTitle("Condom\u00EDnios");
+		frmAllResidential.setBounds(100, 100, 450, 500);
+		frmAllResidential.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAllResidential.getContentPane().setLayout(null);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 315, 439);
+		frmAllResidential.getContentPane().add(scrollPane);
+		
+		listAllResidential = new JList();
+		scrollPane.setViewportView(listAllResidential);
+		
+		JButton btnOk = new JButton("Ok");
+		btnOk.setBounds(335, 11, 90, 25);
+		frmAllResidential.getContentPane().add(btnOk);
+		
+		JButton btnNew = new JButton("Novo");
+		btnNew.setBounds(335, 47, 90, 25);
+		frmAllResidential.getContentPane().add(btnNew);
+		
+		JButton btnCancel = new JButton("Cancelar");
+		btnCancel.setBounds(335, 425, 90, 25);
+		frmAllResidential.getContentPane().add(btnCancel);
+	}
+	
+	// Modularização
+	private void returnLogin() {
+		viewLogin = new ViewLogin();
+		frmAllResidential.setVisible(false);
+		viewLogin.frmLogin.setVisible(true);
+	}
+}

@@ -1,0 +1,93 @@
+package Controler;
+
+import java.sql.SQLException;
+
+import Model.ModelAllResidential;
+
+public class ControlerLogin extends ControlerConection {
+	private String cnpj;
+	private int totalResidential;
+	private String tipo;
+	
+	// variaveis Model
+	ModelAllResidential[] modelAllResidential;
+	
+	// Construtores
+	public ControlerLogin() {
+	}
+
+	public ControlerLogin(String cnpj, String tipo) {
+		super();
+		this.cnpj = cnpj;
+		this.tipo = tipo;
+	}
+
+	// getter and setter
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+	
+	public int getTotalResidential() {
+		return totalResidential;
+	}
+
+	public void setTotalResidential(int totalResidential) {
+		this.totalResidential = totalResidential;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	// Selects
+	public void selectAllResidential(String login, String password) {
+		try {
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select count(*) from login where nomeUsuario = '" + login + "' and senhaUsuario = '" + password + "'");
+			
+			if(rs.next()) {
+				totalResidential = rs.getInt("count(*)");				
+				rs = comandSql.executeQuery("select * from login where nomeUsuario = '" + login + "' and senhaUsuario = '" + password + "'");
+				while(rs.next()) {
+					cnpj = rs.getString("cnpj");
+					tipo = rs.getString("tipo");
+				}
+			}
+			
+			
+			closeConection(conn);
+			
+		} catch (SQLException e) {
+			System.out.println("Erro no select: " + e);
+		}
+	}
+	
+	public void selectResidentialNames(String name, String  password) {
+		try {
+			conecting();
+			
+			conn = conecting();
+			comandSql = conn.createStatement();
+			rs = comandSql.executeQuery("select * from login l inner join condominio c on l.cnpj = c.cnpj where nomeUsuario = '" + name + "' and senhaUsuario = '" + password + "'");
+			
+			while(rs.next()) {
+				
+			}
+			closeConection(conn);
+			
+		} catch (SQLException e) {
+			System.out.println("Erro no select: " + e);
+		}
+	}
+}

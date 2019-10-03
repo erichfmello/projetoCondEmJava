@@ -58,6 +58,8 @@ public class ViewResidentialData {
 	private JTextField txtApartmentLastFloor;
 	private JTextField txtApartmentPerFloor;
 	private JTextField txtBlock;
+	
+	JButton btnNewButton;
 
 	JComboBox comboBoxLastFloor;
 	JComboBox comboBoxUf; 
@@ -66,9 +68,13 @@ public class ViewResidentialData {
 	protected String name, address, cep, neighborhood, uf, cnpj;
 	protected int number, appartmentLastFloor, floor, appartmentPerFloor, Block;
 	
+	private String userName;
+	private String userPassword;
+	
 	// Conexao
 	protected ControlerResidentialData controlerResidentialData = new ControlerResidentialData();
 	protected ControlerAppartment controlerAppartment;
+	private ControlerLogin controlerLogin;
 	protected Connection conn;
 	Statement comandoSQL;
 	ResultSet rs;
@@ -93,6 +99,12 @@ public class ViewResidentialData {
 	 * Create the application.
 	 */
 	public ViewResidentialData() {
+		initialize();
+	}
+	
+	public ViewResidentialData(String userName, String userPassword) {
+		this.userName = userName;
+		this.userPassword = userPassword;
 		initialize();
 	}
 	
@@ -330,7 +342,7 @@ public class ViewResidentialData {
 		txtFloor.setBounds(85, 211, 70, 20);
 		frmResidentialData.getContentPane().add(txtFloor);
 		
-		JButton btnNewButton = new JButton("Ok");
+		btnNewButton = new JButton("Ok");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Adicionando valores nas variáveis
@@ -413,6 +425,9 @@ public class ViewResidentialData {
 							controlerAppartment.insertAppartment(cnpj);
 						}
 					}
+					
+					controlerLogin = new ControlerLogin();
+					controlerLogin.insertNewUser(userName, userPassword, cnpj);
 					
 					frmResidentialData.dispose();					
 

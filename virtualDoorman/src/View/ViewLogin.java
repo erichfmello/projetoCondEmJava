@@ -1,0 +1,142 @@
+package View;
+
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.JobAttributes;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import Controler.ControlerLogin;
+
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
+
+public class ViewLogin {
+
+	protected JFrame frmLogin;
+	private JTextField txtName;
+	
+	// Variaveis comuns
+	private String userName;
+	private String userPassword;
+	private String tipo;
+	
+	// Variaveis View
+	ViewHome viewHome;
+	ViewAllResidential viewAllResidential;
+	
+	// Variaveis de controler
+	ControlerLogin controlerLogin;
+	private JTextField txtPassword;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewLogin window = new ViewLogin();
+					window.frmLogin.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewLogin() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmLogin = new JFrame();
+		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Erich\\Faculdade\\ProjetoCondominio\\img\\principal.jpg"));
+		frmLogin.setTitle("Porteiro Virtual");
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension dimension = tk.getScreenSize();
+		int width = dimension.width/2 - 450/2;
+		int height = dimension.height/2 - 180/2;
+		frmLogin.setBounds(width, height, 450, 180);
+		frmLogin.setResizable(false);
+		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogin.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Nome:");
+		lblNewLabel.setBounds(10, 11, 46, 14);
+		frmLogin.getContentPane().add(lblNewLabel);
+		
+		JLabel lblSenha = new JLabel("Senha:");
+		lblSenha.setBounds(10, 36, 46, 14);
+		frmLogin.getContentPane().add(lblSenha);
+		
+		txtName = new JTextField();
+		txtName.setBounds(66, 8, 358, 20);
+		frmLogin.getContentPane().add(txtName);
+		txtName.setColumns(10);
+		
+		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				userName = txtName.getText();
+				userPassword = txtPassword.getText();
+				
+				controlerLogin = new ControlerLogin();
+				controlerLogin.selectAllResidential(userName, userPassword);
+				
+				if(controlerLogin.getTotalResidential() >= 1) {
+					txtName.setText(null);
+					txtPassword.setText(null);
+					
+					tipo = String.valueOf(controlerLogin.getTipo());
+					
+					if(tipo.equals("a")) {
+						frmLogin.setVisible(false);
+						
+						viewAllResidential = new ViewAllResidential(controlerLogin, userName, userPassword);
+						viewAllResidential.frmAllResidential.setVisible(true);
+						
+					} else {
+						viewHome = new ViewHome(controlerLogin.getCnpj());
+						frmLogin.setVisible(false);
+						viewHome.frmVirtualDoorman.setVisible(true);						
+					}
+					
+				} else {
+					txtName.setText(null);
+					txtPassword.setText(null);
+					JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos");
+					
+				}
+			}
+		});
+		btnOk.setBounds(334, 64, 90, 25);
+		frmLogin.getContentPane().add(btnOk);
+		
+		JButton btnCancel = new JButton("Cancelar");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmLogin.dispose();
+			}
+		});
+		btnCancel.setBounds(334, 100, 90, 25);
+		frmLogin.getContentPane().add(btnCancel);
+		
+		txtPassword = new JTextField();
+		txtPassword.setColumns(10);
+		txtPassword.setBounds(66, 33, 358, 20);
+		frmLogin.getContentPane().add(txtPassword);
+	}
+}

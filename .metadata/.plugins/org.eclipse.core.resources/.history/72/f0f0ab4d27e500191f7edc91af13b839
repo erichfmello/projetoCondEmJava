@@ -1,0 +1,65 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+
+public class ViewLogin {
+
+	private JFrame frame;
+	private JTextField txtName;
+	private JPasswordField passwordField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewLogin window = new ViewLogin();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ViewLogin() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Nome:");
+		lblNewLabel.setBounds(10, 11, 46, 14);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JLabel lblSenha = new JLabel("Senha:");
+		lblSenha.setBounds(10, 36, 46, 14);
+		frame.getContentPane().add(lblSenha);
+		
+		txtName = new JTextField();
+		txtName.setBounds(66, 8, 358, 20);
+		frame.getContentPane().add(txtName);
+		txtName.setColumns(10);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(66, 33, 358, 20);
+		frame.getContentPane().add(passwordField);
+	}
+}
